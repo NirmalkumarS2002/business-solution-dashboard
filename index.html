@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Login Page</title>
+
+  <!-- GOOGLE FONT -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- FONT AWESOME -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+
+  <style>
+    *{
+      margin:0;
+      padding:0;
+      box-sizing:border-box;
+      font-family:'Poppins',sans-serif;
+    }
+
+    body{
+      height:100vh;
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      background:linear-gradient(135deg,#0f172a,#111827,#1e293b);
+      overflow:hidden;
+    }
+
+    .login-box{
+      width:380px;
+      padding:40px 35px;
+      background:rgba(255,255,255,0.08);
+      border:1px solid rgba(255,255,255,0.15);
+      backdrop-filter:blur(15px);
+      border-radius:25px;
+      box-shadow:0 10px 30px rgba(0,0,0,0.4);
+      color:#fff;
+      position:relative;
+    }
+
+    .login-box h2{
+      text-align:center;
+      font-size:32px;
+      margin-bottom:10px;
+    }
+
+    .login-box p{
+      text-align:center;
+      font-size:14px;
+      color:#cbd5e1;
+      margin-bottom:30px;
+    }
+
+    .input-box{
+      position:relative;
+      margin-bottom:22px;
+    }
+
+    .input-box input,
+    .input-box select{
+      width:100%;
+      padding:15px 50px 15px 15px;
+      border:none;
+      outline:none;
+      border-radius:12px;
+      background:rgba(255,255,255,0.12);
+      color:#fff;
+      font-size:15px;
+    }
+
+    .input-box input::placeholder{
+      color:#d1d5db;
+    }
+
+    .input-box select{
+      appearance:none;
+      color:#fff;
+    }
+
+    .input-box option{
+      color:#000;
+    }
+
+    .input-box i{
+      position:absolute;
+      right:18px;
+      top:50%;
+      transform:translateY(-50%);
+      color:#93c5fd;
+      font-size:16px;
+    }
+
+    .login-btn{
+      width:100%;
+      padding:14px;
+      border:none;
+      border-radius:12px;
+      background:linear-gradient(135deg,#38bdf8,#2563eb);
+      color:#fff;
+      font-size:16px;
+      font-weight:600;
+      cursor:pointer;
+      transition:0.4s;
+      margin-top:10px;
+    }
+
+    .login-btn:hover{
+      transform:translateY(-3px);
+      box-shadow:0 10px 20px rgba(37,99,235,0.4);
+    }
+
+    .bottom-text{
+      text-align:center;
+      margin-top:20px;
+      font-size:14px;
+      color:#cbd5e1;
+    }
+
+    .bottom-text a{
+      color:#38bdf8;
+      text-decoration:none;
+      font-weight:500;
+    }
+
+    @media(max-width:450px){
+
+      body{
+        padding:20px;
+      }
+
+      .login-box{
+        width:100%;
+        padding:35px 25px;
+      }
+
+      .login-box h2{
+        font-size:28px;
+      }
+
+    }
+
+  </style>
+</head>
+<body>
+
+  <div class="login-box">
+
+    <h2>Welcome Back</h2>
+    <p>Login to your account</p>
+
+    <!-- ROLE -->
+    <div class="input-box">
+
+    <select id="role">
+
+        <option value="">
+            Select Role
+        </option>
+
+        <option value="admin">
+            Admin
+        </option>
+
+        <option value="client">
+            Client
+        </option>
+
+    </select>
+
+    <i class="fa-solid fa-user-shield"></i>
+
+</div>
+
+    <!-- EMAIL -->
+   <!-- EMAIL -->
+<div class="input-box">
+
+  <input 
+    type="email" 
+    id="email"
+    placeholder="Enter Email ID"
+  >
+
+  <i class="fa-solid fa-envelope"></i>
+
+</div>
+
+    <!-- PASSWORD -->
+    <div class="input-box">
+      <input type="password" placeholder="Enter Password">
+      <i class="fa-solid fa-lock"></i>
+    </div>
+
+    <!-- BUTTON -->
+      <button class="login-btn" onclick="loginUser()">
+      Login
+    </button>
+
+    <div class="bottom-text">
+      Don't have an account?
+      <a href="#">Register</a>
+    </div>
+
+  </div>
+
+<script>
+
+  function loginUser(){
+
+    let role = document.getElementById("role").value;
+
+    // GET EMAIL
+    let email = document.getElementById("email").value;
+
+    // SAVE EMAIL
+    localStorage.setItem("userEmail", email);
+
+    if(role === "admin"){
+
+      window.location.href = "admin.html";
+
+    }
+
+    else if(role === "client"){
+
+      window.location.href = "client.html";
+
+    }
+
+    else{
+
+      alert("Please Select Role");
+
+    }
+
+  }
+
+</script>
+
+</body>
+</html>
+

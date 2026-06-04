@@ -1,0 +1,593 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Admin Dashboard</title>
+
+  <!-- GOOGLE FONT -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- FONT AWESOME -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+
+  <style>
+
+    *{
+      margin:0;
+      padding:0;
+      box-sizing:border-box;
+      font-family:'Poppins',sans-serif;
+    }
+
+    body{
+      background:#0f172a;
+      color:#fff;
+      min-height:100vh;
+      display:flex;
+    }
+
+    /* SIDEBAR */
+
+    .sidebar{
+      width:270px;
+      background:#111827;
+      padding:30px 20px;
+      position:fixed;
+      height:100vh;
+      border-right:1px solid rgba(255,255,255,0.08);
+    }
+
+    .logo{
+      font-size:28px;
+      font-weight:700;
+      color:#38bdf8;
+      margin-bottom:50px;
+    }
+
+    .sidebar ul{
+      list-style:none;
+    }
+
+    .sidebar ul li{
+      margin-bottom:15px;
+    }
+
+    .sidebar ul li a{
+      text-decoration:none;
+      color:#cbd5e1;
+      display:flex;
+      align-items:center;
+      gap:15px;
+      padding:15px;
+      border-radius:12px;
+      transition:0.3s;
+      font-size:15px;
+    }
+
+    .sidebar ul li a:hover,
+    .sidebar ul li a.active{
+      background:linear-gradient(135deg,#2563eb,#38bdf8);
+      color:#fff;
+    }
+
+    /* MAIN */
+
+    .main{
+      margin-left:270px;
+      width:100%;
+      padding:30px;
+    }
+
+    /* TOPBAR */
+
+    .topbar{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      margin-bottom:35px;
+      flex-wrap:wrap;
+      gap:20px;
+    }
+
+    .topbar h1{
+      font-size:32px;
+    }
+
+    .profile{
+      display:flex;
+      align-items:center;
+      gap:15px;
+      background:#111827;
+      padding:10px 18px;
+      border-radius:14px;
+    }
+
+    .profile-icon{
+      width:50px;
+      height:50px;
+      border-radius:50%;
+      background:linear-gradient(135deg,#38bdf8,#2563eb);
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      font-size:22px;
+      font-weight:700;
+      color:#fff;
+      text-transform:uppercase;
+    }
+
+    .profile h4{
+      font-size:18px;
+    }
+
+    .profile p{
+      font-size:13px;
+      color:#94a3b8;
+    }
+
+    /* CARDS */
+
+    .cards{
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+      gap:25px;
+      margin-bottom:35px;
+    }
+
+    .card{
+      background:#111827;
+      padding:25px;
+      border-radius:18px;
+      border:1px solid rgba(255,255,255,0.05);
+      transition:0.3s;
+    }
+
+    .card:hover{
+      transform:translateY(-5px);
+      box-shadow:0 10px 25px rgba(0,0,0,0.3);
+    }
+
+    .card i{
+      font-size:35px;
+      color:#38bdf8;
+      margin-bottom:20px;
+    }
+
+    .card h2{
+      font-size:34px;
+      margin-bottom:5px;
+    }
+
+    .card p{
+      color:#94a3b8;
+      font-size:14px;
+    }
+
+    /* CONTENT */
+
+    .content{
+      display:grid;
+      grid-template-columns:2fr 1fr;
+      gap:25px;
+    }
+
+    .table-box,
+    .activity{
+      background:#111827;
+      border-radius:18px;
+      padding:25px;
+      border:1px solid rgba(255,255,255,0.05);
+    }
+
+    .section-title{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      margin-bottom:25px;
+    }
+
+    .section-title h2{
+      font-size:22px;
+    }
+
+    /* TABLE */
+
+    table{
+      width:100%;
+      border-collapse:collapse;
+    }
+
+    table tr{
+      border-bottom:1px solid rgba(255,255,255,0.06);
+    }
+
+    table th{
+      text-align:left;
+      padding:15px 10px;
+      color:#38bdf8;
+      font-size:14px;
+    }
+
+    table td{
+      padding:16px 10px;
+      color:#cbd5e1;
+      font-size:14px;
+    }
+
+    .status{
+      padding:6px 14px;
+      border-radius:30px;
+      font-size:12px;
+      font-weight:600;
+    }
+
+    .active-status{
+      background:#14532d;
+      color:#4ade80;
+    }
+
+    .pending-status{
+      background:#78350f;
+      color:#facc15;
+    }
+
+    /* ACTIVITY */
+
+    .activity-item{
+      display:flex;
+      gap:15px;
+      margin-bottom:25px;
+    }
+
+    .activity-item i{
+      width:45px;
+      height:45px;
+      border-radius:50%;
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      background:#1e293b;
+      color:#38bdf8;
+      font-size:18px;
+    }
+
+    .activity-item h4{
+      margin-bottom:5px;
+      font-size:15px;
+    }
+
+    .activity-item p{
+      font-size:13px;
+      color:#94a3b8;
+    }
+
+    /* RESPONSIVE */
+
+    @media(max-width:1100px){
+
+      .content{
+        grid-template-columns:1fr;
+      }
+
+    }
+
+    @media(max-width:900px){
+
+      .sidebar{
+        width:90px;
+        padding:25px 10px;
+      }
+
+      .logo{
+        font-size:18px;
+        text-align:center;
+      }
+
+      .sidebar ul li a span{
+        display:none;
+      }
+
+      .sidebar ul li a{
+        justify-content:center;
+      }
+
+      .main{
+        margin-left:90px;
+      }
+
+    }
+
+    @media(max-width:600px){
+
+      .main{
+        padding:20px;
+      }
+
+      .topbar h1{
+        font-size:24px;
+      }
+
+      .profile{
+        width:100%;
+        justify-content:center;
+      }
+
+      table{
+        display:block;
+        overflow-x:auto;
+      }
+
+    }
+
+  </style>
+</head>
+<body>
+
+  <!-- SIDEBAR -->
+
+  <div class="sidebar">
+
+    <div class="logo">
+      BizNova
+    </div>
+
+    <ul>
+
+      <li>
+        <a href="#" class="active">
+          <i class="fa-solid fa-grid-2"></i>
+          <span>Dashboard</span>
+        </a>
+      </li>
+
+      <li>
+        <a href="#">
+          <i class="fa-solid fa-users"></i>
+          <span>Manage Users</span>
+        </a>
+      </li>
+
+      <li>
+        <a href="#">
+          <i class="fa-solid fa-briefcase"></i>
+          <span>Projects</span>
+        </a>
+      </li>
+
+      <li>
+        <a href="#">
+          <i class="fa-solid fa-chart-line"></i>
+          <span>Reports</span>
+        </a>
+      </li>
+
+      <li>
+        <a href="#">
+          <i class="fa-solid fa-gear"></i>
+          <span>Settings</span>
+        </a>
+      </li>
+
+      <li>
+
+        <a href="#" onclick="logoutUser()">
+
+          <i class="fa-solid fa-right-from-bracket"></i>
+
+          <span>Logout</span>
+
+        </a>
+
+      </li>
+
+    </ul>
+
+  </div>
+
+  <!-- MAIN -->
+
+  <div class="main">
+
+    <!-- TOPBAR -->
+
+    <div class="topbar">
+
+      <h1>Admin Dashboard</h1>
+
+      <div class="profile">
+
+        <div class="profile-icon" id="profileIcon"></div>
+
+        <div>
+
+          <h4 id="userName"></h4>
+
+          <p>Administrator</p>
+
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- CARDS -->
+
+    <div class="cards">
+
+      <div class="card">
+        <i class="fa-solid fa-users"></i>
+        <h2>1,250</h2>
+        <p>Total Users</p>
+      </div>
+
+      <div class="card">
+        <i class="fa-solid fa-briefcase"></i>
+        <h2>320</h2>
+        <p>Total Projects</p>
+      </div>
+
+      <div class="card">
+        <i class="fa-solid fa-dollar-sign"></i>
+        <h2>$58K</h2>
+        <p>Total Revenue</p>
+      </div>
+
+      <div class="card">
+        <i class="fa-solid fa-chart-line"></i>
+        <h2>89%</h2>
+        <p>Growth Rate</p>
+      </div>
+
+    </div>
+
+    <!-- CONTENT -->
+
+    <div class="content">
+
+      <!-- USERS TABLE -->
+
+      <div class="table-box">
+
+        <div class="section-title">
+          <h2>Recent Clients</h2>
+        </div>
+
+        <table>
+
+          <tr>
+            <th>Name</th>
+            <th>Project</th>
+            <th>Status</th>
+          </tr>
+
+          <tr>
+            <td>Nirmal Kumar</td>
+            <td>Business Website</td>
+            <td>
+              <span class="status active-status">
+                Active
+              </span>
+            </td>
+          </tr>
+
+          <tr>
+            <td>Rahul</td>
+            <td>Mobile App</td>
+            <td>
+              <span class="status pending-status">
+                Pending
+              </span>
+            </td>
+          </tr>
+
+          <tr>
+            <td>Arun</td>
+            <td>SEO Optimization</td>
+            <td>
+              <span class="status active-status">
+                Active
+              </span>
+            </td>
+          </tr>
+
+          <tr>
+            <td>Vijay</td>
+            <td>Ecommerce Store</td>
+            <td>
+              <span class="status active-status">
+                Active
+              </span>
+            </td>
+          </tr>
+
+        </table>
+
+      </div>
+
+      <!-- ACTIVITY -->
+
+      <div class="activity">
+
+        <div class="section-title">
+          <h2>Admin Activity</h2>
+        </div>
+
+        <div class="activity-item">
+
+          <i class="fa-solid fa-user-plus"></i>
+
+          <div>
+            <h4>New User Registered</h4>
+            <p>5 new clients registered today.</p>
+          </div>
+
+        </div>
+
+        <div class="activity-item">
+
+          <i class="fa-solid fa-chart-column"></i>
+
+          <div>
+            <h4>Sales Increased</h4>
+            <p>Revenue increased by 22% this month.</p>
+          </div>
+
+        </div>
+
+        <div class="activity-item">
+
+          <i class="fa-solid fa-check"></i>
+
+          <div>
+            <h4>Project Approved</h4>
+            <p>Admin approved 12 pending projects.</p>
+          </div>
+
+        </div>
+
+        <div class="activity-item">
+
+          <i class="fa-solid fa-envelope"></i>
+
+          <div>
+            <h4>Support Messages</h4>
+            <p>You received 8 new support requests.</p>
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+  <script>
+
+    // EMAIL GET
+    let userEmail = localStorage.getItem("userEmail");
+
+    // SHOW EMAIL
+    document.getElementById("userName").innerHTML = userEmail;
+
+    // FIRST LETTER
+    let firstLetter = userEmail.charAt(0);
+
+    // PROFILE ICON
+    document.getElementById("profileIcon").innerHTML = firstLetter;
+
+    // LOGOUT
+    function logoutUser(){
+
+      localStorage.removeItem("userEmail");
+
+      window.location.href = "index.html";
+
+    }
+
+  </script>
+
+</body>
+</html>
