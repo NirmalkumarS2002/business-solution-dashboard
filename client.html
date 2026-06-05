@@ -1,777 +1,2048 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
   <title>Client Dashboard</title>
-
-  <!-- GOOGLE FONT -->
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-
-  <!-- FONT AWESOME -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
-
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
   <style>
-
-    *{
-      margin:0;
-      padding:0;
-      box-sizing:border-box;
-      font-family:'Poppins',sans-serif;
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Poppins', sans-serif;
     }
 
-    body{
-      background:
-      linear-gradient(rgba(8,10,25,0.88),rgba(8,10,25,0.88)),
-      linear-gradient(135deg,#090916,#111827,#0f172a);
-      color:#fff;
-      min-height:100vh;
-      overflow-x:hidden;
+    body {
+      background: linear-gradient(rgba(8, 10, 25, 0.88), rgba(8, 10, 25, 0.88)), linear-gradient(135deg, #090916, #111827, #0f172a);
+      color: #fff;
+      min-height: 100vh;
+      overflow-x: hidden;
     }
 
     /* OVERLAY */
-
-    .overlay{
-      position:fixed;
-      width:100%;
-      height:100%;
-      background:rgba(0,0,0,0.5);
-      top:0;
-      left:0;
-      z-index:998;
-      opacity:0;
-      visibility:hidden;
-      transition:0.3s;
+    .overlay {
+      position: fixed;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.5);
+      top: 0;
+      left: 0;
+      z-index: 998;
+      opacity: 0;
+      visibility: hidden;
+      transition: 0.3s;
     }
 
-    .overlay.show{
-      opacity:1;
-      visibility:visible;
+    .overlay.show {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .sidelogo img {
+      display: none;
+      width: 160px;
+    }
+
+    .topbar-logo img {
+      width: 160px;
+    }
+
+    @media(max-width:600px) {
+
+      .topbar-logo img {
+        width: 130px;
+      }
+
     }
 
     /* SIDEBAR */
-
-    .sidebar{
-      width:270px;
-      background:rgba(15,23,42,0.95);
-      padding:30px 20px;
-      position:fixed;
-      top:0;
-      left:0;
-      height:100vh;
-      border-right:1px solid rgba(168,85,247,0.2);
-      backdrop-filter:blur(12px);
-      z-index:999;
-      transition:0.3s ease;
+    .sidebar {
+      width: 270px;
+      background: rgba(15, 23, 42, 0.95);
+      padding: 30px 20px;
+      position: fixed;
+      top: 0;
+      left: 0;
+      height: 100vh;
+      border-right: 1px solid rgba(168, 85, 247, 0.2);
+      backdrop-filter: blur(12px);
+      z-index: 999;
+      transition: 0.3s ease;
+      overflow-y: auto;
     }
 
-    .sidebar.active{
-      left:0;
+    .sidebar-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
     }
 
-    .sidebar-top{
-      display:flex;
-      justify-content:space-between;
-      align-items:center;
-      margin-bottom:20px;
+    .close-btn {
+      display: none;
+      font-size: 22px;
+      cursor: pointer;
+      color: #fff;
     }
 
-    .close-btn{
-      display:none;
-      font-size:22px;
-      cursor:pointer;
-      color:#fff;
+    .sidelogo {
+      font-size: 22px;
+      font-weight: 700;
+      background: linear-gradient(135deg, #d946ef, #3b82f6);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
     }
 
-    .logo{
-      display:flex;
-      align-items:center;
+    .sidebar ul {
+      list-style: none;
     }
 
-    .logo img{
-      width:clamp(140px,18vw,190px);
+    .sidebar ul li {
+      margin-bottom: 10px;
     }
 
-    .sidelogo img{
-      display:none;
-      width:150px;
+    .sidebar ul li a {
+      text-decoration: none;
+      color: #d1d5db;
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      padding: 14px 15px;
+      border-radius: 14px;
+      transition: 0.3s;
+      font-size: 14px;
+      background: rgba(255, 255, 255, 0.03);
+      cursor: pointer;
     }
 
-    .sidebar ul{
-      list-style:none;
-    }
-
-    .sidebar ul li{
-      margin-bottom:15px;
-    }
-
-    .sidebar ul li a{
-      text-decoration:none;
-      color:#d1d5db;
-      display:flex;
-      align-items:center;
-      gap:15px;
-      padding:15px;
-      border-radius:14px;
-      transition:0.3s;
-      font-size:15px;
-      background:rgba(255,255,255,0.03);
-    }
-
-    .sidebar ul li a i{
-      color:#c084fc;
+    .sidebar ul li a i {
+      color: #c084fc;
+      width: 18px;
+      text-align: center;
     }
 
     .sidebar ul li a:hover,
-    .sidebar ul li a.active{
-      background:linear-gradient(135deg,#d946ef,#3b82f6);
-      color:#fff;
-      box-shadow:0 0 18px rgba(217,70,239,0.35);
+    .sidebar ul li a.active {
+      background: linear-gradient(135deg, #d946ef, #3b82f6);
+      color: #fff;
+      box-shadow: 0 0 18px rgba(217, 70, 239, 0.35);
     }
 
     .sidebar ul li a:hover i,
-    .sidebar ul li a.active i{
-      color:#fff;
+    .sidebar ul li a.active i {
+      color: #fff;
+    }
+
+    .sidebar.active {
+      left: 0;
     }
 
     /* MAIN */
-
-    .main{
-      margin-left:270px;
-      width:calc(100% - 270px);
-      padding:30px;
-      transition:0.3s;
+    .main {
+      margin-left: 270px;
+      width: calc(100% - 270px);
+      padding: 30px;
+      transition: 0.3s;
+      min-height: 100vh;
     }
 
     /* TOPBAR */
-
-    .topbar{
-      display:flex;
-      justify-content:space-between;
-      align-items:center;
-      margin-bottom:35px;
-      gap:20px;
-      flex-wrap:nowrap;
+    .topbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 35px;
+      gap: 20px;
     }
 
-    .menulogo{
-      display:flex;
-      align-items:center;
-      gap:18px;
+    .menulogo {
+      display: flex;
+      align-items: center;
+      gap: 18px;
     }
 
-    .menu-btn{
-      width:45px;
-      height:45px;
-      background:rgba(255,255,255,0.08);
-      border:1px solid rgba(217,70,239,0.2);
-      border-radius:12px;
-      display:none;
-      justify-content:center;
-      align-items:center;
-      cursor:pointer;
-      font-size:20px;
-      color:#fff;
-      backdrop-filter:blur(10px);
+    .menu-btn {
+      width: 45px;
+      height: 45px;
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(217, 70, 239, 0.2);
+      border-radius: 12px;
+      display: none;
+      justify-content: center;
+      align-items: center;
+      cursor: pointer;
+      font-size: 20px;
+      color: #fff;
     }
 
-    .profile{
-      display:flex;
-      align-items:center;
-      gap:15px;
-      padding:10px 18px;
-      border-radius:16px;
-      background:rgba(255,255,255,0.05);
-      border:1px solid rgba(217,70,239,0.15);
-      backdrop-filter:blur(10px);
+    .topbar-logo {
+      font-size: 20px;
+      font-weight: 700;
+      background: linear-gradient(135deg, #d946ef, #3b82f6);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
     }
 
-    .profile-icon{
-      width:50px;
-      height:50px;
-      border-radius:50%;
-      background:linear-gradient(135deg,#d946ef,#3b82f6);
-      display:flex;
-      justify-content:center;
-      align-items:center;
-      font-size:22px;
-      font-weight:700;
-      color:#fff;
-      text-transform:uppercase;
-      box-shadow:0 0 15px rgba(59,130,246,0.4);
+    .profile {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      padding: 10px 18px;
+      border-radius: 16px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(217, 70, 239, 0.15);
+      backdrop-filter: blur(10px);
     }
 
-    .profile h4{
-      font-size:17px;
+    .profile-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #d946ef, #3b82f6);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 20px;
+      font-weight: 700;
+      color: #fff;
+      text-transform: uppercase;
+      flex-shrink: 0;
     }
 
-    .profile p{
-      font-size:13px;
-      color:#cbd5e1;
+    .profile h4 {
+      font-size: 15px;
+      white-space: nowrap;
     }
 
-    /* HEADING */
+    .profile p {
+      font-size: 12px;
+      color: #cbd5e1;
+    }
 
-    .cardwraper h1{
-      font-size:42px;
-      margin-bottom:30px;
-      background:linear-gradient(135deg,#d946ef,#3b82f6);
-      -webkit-background-clip:text;
-      -webkit-text-fill-color:transparent;
+    /* PAGES */
+    .page {
+      display: none;
+    }
+
+    .page.active {
+      display: block;
+    }
+
+    /* PAGE HEADER */
+    .page-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 30px;
+      flex-wrap: wrap;
+      gap: 15px;
+    }
+
+    .page-title {
+      font-size: 38px;
+      background: linear-gradient(135deg, #d946ef, #3b82f6);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    /* BUTTONS */
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 12px 22px;
+      background: linear-gradient(135deg, #d946ef, #3b82f6);
+      border: none;
+      border-radius: 14px;
+      color: #fff;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: 0.3s;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    .btn-primary:hover {
+      box-shadow: 0 0 20px rgba(217, 70, 239, 0.4);
+      transform: translateY(-2px);
     }
 
     /* CARDS */
-
-    .cards{
-      display:grid;
-      grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
-      gap:25px;
-      margin-bottom:35px;
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 22px;
+      margin-bottom: 30px;
     }
 
-    .card{
-      background:rgba(17,24,39,0.88);
-      padding:25px;
-      border-radius:22px;
-      border:1px solid rgba(217,70,239,0.15);
-      backdrop-filter:blur(14px);
-      transition:0.3s;
+    .card {
+      background: rgba(17, 24, 39, 0.88);
+      padding: 24px;
+      border-radius: 22px;
+      border: 1px solid rgba(217, 70, 239, 0.15);
+      backdrop-filter: blur(14px);
+      transition: 0.3s;
     }
 
-    .card:hover{
-      transform:translateY(-5px);
-      box-shadow:0 0 25px rgba(217,70,239,0.25);
+    .card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 0 25px rgba(217, 70, 239, 0.25);
     }
 
-    .card i{
-      font-size:35px;
-      color:#c084fc;
-      margin-bottom:20px;
+    .card i {
+      font-size: 32px;
+      color: #c084fc;
+      margin-bottom: 16px;
     }
 
-    .card h2{
-      font-size:34px;
-      margin-bottom:5px;
+    .card h2 {
+      font-size: 32px;
+      margin-bottom: 4px;
     }
 
-    .card p{
-      color:#cbd5e1;
-      font-size:14px;
+    .card p {
+      color: #cbd5e1;
+      font-size: 13px;
     }
 
-    /* CONTENT */
-
-    .content{
-      display:grid;
-      grid-template-columns:2fr 1fr;
-      gap:25px;
+    .card .trend {
+      font-size: 12px;
+      margin-top: 6px;
     }
 
-    .table-box,
-    .activity{
-      background:rgba(17,24,39,0.88);
-      border-radius:22px;
-      padding:25px;
-      border:1px solid rgba(217,70,239,0.15);
-      backdrop-filter:blur(14px);
-      overflow:auto;
+    .trend.up {
+      color: #4ade80;
     }
 
-    .section-title{
-      margin-bottom:25px;
+    .trend.down {
+      color: #f87171;
     }
 
-    .section-title h2{
-      font-size:22px;
-      color:#fff;
+    /* TABLE BOX */
+    .table-box {
+      background: rgba(17, 24, 39, 0.88);
+      border-radius: 22px;
+      padding: 25px;
+      border: 1px solid rgba(217, 70, 239, 0.15);
+      backdrop-filter: blur(14px);
+      overflow: auto;
     }
 
-    /* TABLE */
-
-    table{
-      width:100%;
-      border-collapse:collapse;
-      min-width:500px;
+    .section-title {
+      margin-bottom: 20px;
     }
 
-    table tr{
-      border-bottom:1px solid rgba(255,255,255,0.08);
+    .section-title h2 {
+      font-size: 20px;
     }
 
-    table th{
-      text-align:left;
-      padding:15px 10px;
-      color:#c084fc;
-      font-size:14px;
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 500px;
     }
 
-    table td{
-      padding:16px 10px;
-      color:#e5e7eb;
-      font-size:14px;
+    table tr {
+      border-bottom: 1px solid rgba(255, 255, 255, 0.07);
     }
 
-    .status{
-      padding:6px 14px;
-      border-radius:30px;
-      font-size:12px;
-      font-weight:600;
+    table th {
+      text-align: left;
+      padding: 14px 10px;
+      color: #c084fc;
+      font-size: 13px;
     }
 
-    .active-status{
-      background:rgba(34,197,94,0.15);
-      color:#4ade80;
+    table td {
+      padding: 14px 10px;
+      color: #e5e7eb;
+      font-size: 13px;
     }
 
-    .pending-status{
-      background:rgba(234,179,8,0.15);
-      color:#facc15;
+    .status {
+      padding: 5px 13px;
+      border-radius: 30px;
+      font-size: 12px;
+      font-weight: 600;
     }
 
-    /* ACTIVITY */
-
-    .activity-item{
-      display:flex;
-      gap:15px;
-      margin-bottom:25px;
+    .active-status {
+      background: rgba(34, 197, 94, 0.15);
+      color: #4ade80;
     }
 
-    .activity-item i{
-      width:45px;
-      height:45px;
-      border-radius:50%;
-      display:flex;
-      justify-content:center;
-      align-items:center;
-      background:rgba(217,70,239,0.15);
-      color:#c084fc;
-      font-size:18px;
-      flex-shrink:0;
+    .pending-status {
+      background: rgba(234, 179, 8, 0.15);
+      color: #facc15;
     }
 
-    .activity-item h4{
-      margin-bottom:5px;
-      font-size:15px;
+    .inactive-status {
+      background: rgba(239, 68, 68, 0.15);
+      color: #f87171;
     }
 
-    .activity-item p{
-      font-size:13px;
-      color:#cbd5e1;
+    .completed-status {
+      background: rgba(59, 130, 246, 0.15);
+      color: #60a5fa;
+    }
+
+    /* ACTION BUTTONS */
+    .action-btns {
+      display: flex;
+      gap: 8px;
+    }
+
+    .action-btn {
+      width: 32px;
+      height: 32px;
+      border-radius: 9px;
+      border: none;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      cursor: pointer;
+      font-size: 13px;
+      transition: 0.3s;
+    }
+
+    .edit-btn {
+      background: rgba(59, 130, 246, 0.15);
+      color: #60a5fa;
+    }
+
+    .edit-btn:hover {
+      background: rgba(59, 130, 246, 0.3);
+    }
+
+    .delete-btn {
+      background: rgba(239, 68, 68, 0.15);
+      color: #f87171;
+    }
+
+    .delete-btn:hover {
+      background: rgba(239, 68, 68, 0.3);
+    }
+
+    /* SEARCH FILTER */
+    .search-filter {
+      display: flex;
+      gap: 15px;
+      margin-bottom: 22px;
+      flex-wrap: wrap;
+    }
+
+    .search-box {
+      flex: 1;
+      min-width: 180px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background: rgba(17, 24, 39, 0.88);
+      border: 1px solid rgba(217, 70, 239, 0.2);
+      border-radius: 14px;
+      padding: 11px 16px;
+    }
+
+    .search-box input {
+      background: none;
+      border: none;
+      outline: none;
+      color: #fff;
+      font-size: 13px;
+      width: 100%;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    .search-box input::placeholder {
+      color: #94a3b8;
+    }
+
+    .search-box i {
+      color: #c084fc;
+    }
+
+    .filter-select {
+      background: rgba(17, 24, 39, 0.88);
+      border: 1px solid rgba(217, 70, 239, 0.2);
+      border-radius: 14px;
+      padding: 11px 16px;
+      color: #fff;
+      font-size: 13px;
+      outline: none;
+      cursor: pointer;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    .filter-select option {
+      background: #111827;
+    }
+
+    /* USER CELL */
+    .user-cell {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .user-avatar {
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #d946ef, #3b82f6);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-weight: 700;
+      font-size: 13px;
+      flex-shrink: 0;
+    }
+
+    /* PAGINATION */
+    .pagination {
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      gap: 8px;
+      margin-top: 20px;
+      flex-wrap: wrap;
+    }
+
+    .page-btn {
+      width: 36px;
+      height: 36px;
+      border-radius: 10px;
+      border: 1px solid rgba(217, 70, 239, 0.2);
+      background: rgba(255, 255, 255, 0.04);
+      color: #fff;
+      cursor: pointer;
+      font-size: 13px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      transition: 0.3s;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    .page-btn.active,
+    .page-btn:hover {
+      background: linear-gradient(135deg, #d946ef, #3b82f6);
+      border-color: transparent;
+    }
+
+    /* PROJECTS */
+    .projects-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 20px;
+    }
+
+    .project-card {
+      background: rgba(17, 24, 39, 0.88);
+      border-radius: 20px;
+      padding: 22px;
+      border: 1px solid rgba(217, 70, 239, 0.15);
+      backdrop-filter: blur(14px);
+      transition: 0.3s;
+    }
+
+    .project-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 0 22px rgba(217, 70, 239, 0.2);
+    }
+
+    .project-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 14px;
+    }
+
+    .project-icon {
+      width: 46px;
+      height: 46px;
+      border-radius: 13px;
+      background: linear-gradient(135deg, rgba(217, 70, 239, 0.2), rgba(59, 130, 246, 0.2));
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 20px;
+      color: #c084fc;
+    }
+
+    .project-actions {
+      display: flex;
+      gap: 7px;
+    }
+
+    .project-name {
+      font-size: 16px;
+      font-weight: 600;
+      margin-bottom: 5px;
+    }
+
+    .project-client {
+      font-size: 12px;
+      color: #94a3b8;
+      margin-bottom: 14px;
+    }
+
+    .project-client i {
+      margin-right: 4px;
+      color: #c084fc;
+    }
+
+    .progress-label {
+      display: flex;
+      justify-content: space-between;
+      font-size: 11px;
+      color: #94a3b8;
+      margin-bottom: 7px;
+    }
+
+    .progress-bar {
+      height: 7px;
+      background: rgba(255, 255, 255, 0.08);
+      border-radius: 10px;
+      overflow: hidden;
+      margin-bottom: 14px;
+    }
+
+    .progress-fill {
+      height: 100%;
+      border-radius: 10px;
+      background: linear-gradient(90deg, #d946ef, #3b82f6);
+    }
+
+    .project-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .deadline {
+      font-size: 11px;
+      color: #94a3b8;
+    }
+
+    .deadline i {
+      margin-right: 4px;
+      color: #c084fc;
+    }
+
+    /* DASHBOARD CONTENT */
+    .dash-content {
+      display: grid;
+      grid-template-columns: 2fr 1fr;
+      gap: 22px;
+    }
+
+    .activity {
+      background: rgba(17, 24, 39, 0.88);
+      border-radius: 22px;
+      padding: 25px;
+      border: 1px solid rgba(217, 70, 239, 0.15);
+      backdrop-filter: blur(14px);
+    }
+
+    .activity-item {
+      display: flex;
+      gap: 14px;
+      margin-bottom: 22px;
+    }
+
+    .activity-item:last-child {
+      margin-bottom: 0;
+    }
+
+    .activity-item .act-icon {
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: rgba(217, 70, 239, 0.15);
+      color: #c084fc;
+      font-size: 16px;
+      flex-shrink: 0;
+    }
+
+    .activity-item h4 {
+      margin-bottom: 4px;
+      font-size: 14px;
+    }
+
+    .activity-item p {
+      font-size: 12px;
+      color: #cbd5e1;
+    }
+
+    /* REPORTS */
+    .charts-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 22px;
+      margin-top: 22px;
+    }
+
+    .charts-row2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 22px;
+    }
+
+    .chart-box {
+      background: rgba(17, 24, 39, 0.88);
+      border-radius: 22px;
+      position: relative;
+      padding: 24px;
+      border: 1px solid rgba(217, 70, 239, 0.15);
+      backdrop-filter: blur(14px);
+    }
+
+    .chart-box h2 {
+      font-size: 16px;
+      margin-bottom: 18px;
+    }
+
+    .filter-tabs {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 22px;
+      flex-wrap: wrap;
+    }
+
+    .tab-btn {
+      padding: 8px 18px;
+      border-radius: 11px;
+      border: 1px solid rgba(217, 70, 239, 0.2);
+      background: rgba(255, 255, 255, 0.04);
+      color: #d1d5db;
+      cursor: pointer;
+      font-size: 13px;
+      transition: 0.3s;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    .tab-btn.active,
+    .tab-btn:hover {
+      background: linear-gradient(135deg, #d946ef, #3b82f6);
+      color: #fff;
+      border-color: transparent;
+    }
+
+    .chart-box canvas {
+      width: 100% !important;
+      height: 100% !important;
+    }
+
+    /* SETTINGS */
+    .settings-layout {
+      display: grid;
+      grid-template-columns: 210px 1fr;
+      gap: 22px;
+    }
+
+    .settings-nav {
+      background: rgba(17, 24, 39, 0.88);
+      border-radius: 22px;
+      padding: 18px;
+      border: 1px solid rgba(217, 70, 239, 0.15);
+      height: fit-content;
+    }
+
+    .settings-nav-item {
+      display: flex;
+      align-items: center;
+      gap: 11px;
+      padding: 12px 14px;
+      border-radius: 11px;
+      cursor: pointer;
+      transition: 0.3s;
+      font-size: 13px;
+      color: #d1d5db;
+      margin-bottom: 7px;
+    }
+
+    .settings-nav-item i {
+      color: #c084fc;
+      width: 16px;
+      text-align: center;
+    }
+
+    .settings-nav-item:hover,
+    .settings-nav-item.s-active {
+      background: linear-gradient(135deg, #d946ef, #3b82f6);
+      color: #fff;
+    }
+
+    .settings-nav-item:hover i,
+    .settings-nav-item.s-active i {
+      color: #fff;
+    }
+
+    .settings-content {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .settings-panel {
+      background: rgba(17, 24, 39, 0.88);
+      border-radius: 22px;
+      padding: 26px;
+      border: 1px solid rgba(217, 70, 239, 0.15);
+      backdrop-filter: blur(14px);
+    }
+
+    .panel-title {
+      display: flex;
+      align-items: center;
+      gap: 11px;
+      margin-bottom: 22px;
+    }
+
+    .panel-title .p-icon {
+      width: 38px;
+      height: 38px;
+      border-radius: 11px;
+      background: rgba(217, 70, 239, 0.15);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: #c084fc;
+      font-size: 16px;
+      flex-shrink: 0;
+    }
+
+    .panel-title h2 {
+      font-size: 17px;
+    }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    .form-group {
+      margin-bottom: 16px;
+    }
+
+    .form-group label {
+      display: block;
+      font-size: 12px;
+      color: #c084fc;
+      margin-bottom: 7px;
+    }
+
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+      width: 100%;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(217, 70, 239, 0.2);
+      border-radius: 11px;
+      padding: 11px 14px;
+      color: #fff;
+      font-size: 13px;
+      outline: none;
+      font-family: 'Poppins', sans-serif;
+      transition: 0.3s;
+      resize: none;
+    }
+
+    .form-group input:focus,
+    .form-group select:focus,
+    .form-group textarea:focus {
+      border-color: rgba(217, 70, 239, 0.5);
+    }
+
+    .form-group select option {
+      background: #111827;
+    }
+
+    .avatar-row {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      margin-bottom: 22px;
+    }
+
+    .big-avatar {
+      width: 72px;
+      height: 72px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #d946ef, #3b82f6);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 30px;
+      font-weight: 700;
+      flex-shrink: 0;
+    }
+
+    .avatar-info p {
+      font-size: 12px;
+      color: #94a3b8;
+      margin-top: 4px;
+    }
+
+    .change-photo-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      padding: 8px 16px;
+      border-radius: 10px;
+      border: 1px solid rgba(217, 70, 239, 0.3);
+      background: rgba(217, 70, 239, 0.08);
+      color: #c084fc;
+      cursor: pointer;
+      font-size: 12px;
+      font-family: 'Poppins', sans-serif;
+      transition: 0.3s;
+    }
+
+    .change-photo-btn:hover {
+      background: rgba(217, 70, 239, 0.2);
+    }
+
+    .toggle-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 14px 0;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    }
+
+    .toggle-row:last-child {
+      border-bottom: none;
+    }
+
+    .toggle-info h4 {
+      font-size: 14px;
+      margin-bottom: 3px;
+    }
+
+    .toggle-info p {
+      font-size: 12px;
+      color: #94a3b8;
+    }
+
+    .toggle {
+      position: relative;
+      width: 48px;
+      height: 25px;
+      flex-shrink: 0;
+    }
+
+    .toggle input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+
+    .slider {
+      position: absolute;
+      inset: 0;
+      background: rgba(255, 255, 255, 0.12);
+      border-radius: 30px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    .slider:before {
+      content: "";
+      position: absolute;
+      width: 19px;
+      height: 19px;
+      left: 3px;
+      top: 3px;
+      background: #fff;
+      border-radius: 50%;
+      transition: 0.3s;
+    }
+
+    .toggle input:checked+.slider {
+      background: linear-gradient(135deg, #d946ef, #3b82f6);
+    }
+
+    .toggle input:checked+.slider:before {
+      transform: translateX(23px);
+    }
+
+    .save-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 9px;
+      padding: 11px 24px;
+      background: linear-gradient(135deg, #d946ef, #3b82f6);
+      border: none;
+      border-radius: 13px;
+      color: #fff;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: 0.3s;
+      font-family: 'Poppins', sans-serif;
+      margin-top: 4px;
+    }
+
+    .save-btn:hover {
+      box-shadow: 0 0 18px rgba(217, 70, 239, 0.4);
+      transform: translateY(-2px);
+    }
+
+    .danger-zone-panel {
+      border-color: rgba(239, 68, 68, 0.3) !important;
+    }
+
+    .danger-zone-panel .p-icon {
+      background: rgba(239, 68, 68, 0.15) !important;
+      color: #f87171 !important;
+    }
+
+    .danger-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 14px 0;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+      gap: 15px;
+    }
+
+    .danger-item:last-child {
+      border-bottom: none;
+    }
+
+    .danger-info h4 {
+      font-size: 14px;
+      margin-bottom: 3px;
+    }
+
+    .danger-info p {
+      font-size: 12px;
+      color: #94a3b8;
+    }
+
+    .danger-btn {
+      padding: 8px 16px;
+      border-radius: 10px;
+      border: 1px solid rgba(239, 68, 68, 0.4);
+      background: rgba(239, 68, 68, 0.1);
+      color: #f87171;
+      cursor: pointer;
+      font-size: 12px;
+      font-family: 'Poppins', sans-serif;
+      transition: 0.3s;
+      white-space: nowrap;
+    }
+
+    .danger-btn:hover {
+      background: rgba(239, 68, 68, 0.25);
+    }
+
+    /* MODAL */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.7);
+      z-index: 1000;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      opacity: 0;
+      visibility: hidden;
+      transition: 0.3s;
+      padding: 20px;
+    }
+
+    .modal-overlay.show {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .modal {
+      background: #0f172a;
+      border: 1px solid rgba(217, 70, 239, 0.3);
+      border-radius: 22px;
+      padding: 28px;
+      width: 100%;
+      max-width: 460px;
+      position: relative;
+      max-height: 90vh;
+      overflow-y: auto;
+    }
+
+    .modal h2 {
+      font-size: 20px;
+      margin-bottom: 22px;
+      background: linear-gradient(135deg, #d946ef, #3b82f6);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .modal-close {
+      position: absolute;
+      top: 18px;
+      right: 18px;
+      background: none;
+      border: none;
+      color: #fff;
+      font-size: 18px;
+      cursor: pointer;
+    }
+
+    .modal-footer {
+      display: flex;
+      gap: 11px;
+      justify-content: flex-end;
+      margin-top: 20px;
+    }
+
+    .cancel-btn {
+      padding: 10px 20px;
+      border-radius: 11px;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      background: none;
+      color: #fff;
+      cursor: pointer;
+      font-family: 'Poppins', sans-serif;
+      font-size: 13px;
+    }
+
+    /* TOAST */
+    .toast {
+      position: fixed;
+      bottom: 28px;
+      right: 28px;
+      background: linear-gradient(135deg, #d946ef, #3b82f6);
+      color: #fff;
+      padding: 13px 22px;
+      border-radius: 13px;
+      font-size: 13px;
+      z-index: 2000;
+      opacity: 0;
+      transform: translateY(20px);
+      transition: 0.3s;
+      pointer-events: none;
+    }
+
+    .toast.show {
+      opacity: 1;
+      transform: translateY(0);
     }
 
     /* RESPONSIVE */
-
-    @media(max-width:1100px){
-
-      .content{
-        grid-template-columns:1fr;
+    @media(max-width:1100px) {
+      .dash-content {
+        grid-template-columns: 1fr;
       }
 
+      .charts-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .charts-row2 {
+        grid-template-columns: 1fr;
+      }
     }
 
-    @media(max-width:950px){
-
-      .menu-btn{
-        display:flex;
+    @media(max-width:950px) {
+      .menu-btn {
+        display: flex;
       }
 
-      .close-btn{
-        display:block;
+      .close-btn {
+        display: block;
       }
 
-      .sidelogo img{
-        display:block;
+      .sidebar {
+        left: -100%;
       }
 
-      .sidebar{
-        left:-100%;
+      .main {
+        margin-left: 0;
+        width: 100%;
+        padding: 20px;
       }
 
-      .main{
-        margin-left:0;
-        width:100%;
-        padding:20px;
+      .sidelogo img {
+        display: block;
       }
-
     }
 
-    @media(max-width:768px){
-
-      .topbar{
-        gap:15px;
+    @media(max-width:800px) {
+      .settings-layout {
+        grid-template-columns: 1fr;
       }
 
-      .cardwraper h1{
-        font-size:30px;
+      .settings-nav {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 7px;
       }
 
-      .profile-icon{
-        width:42px;
-        height:42px;
-        font-size:18px;
+      .settings-nav-item {
+        margin-bottom: 0;
       }
 
-      .profile h4{
-        font-size:14px;
+      .form-row {
+        grid-template-columns: 1fr;
       }
 
-      .profile p{
-        font-size:11px;
+      .danger-item {
+        flex-direction: column;
+        align-items: flex-start;
       }
-
-      .cards{
-        grid-template-columns:1fr;
-      }
-
     }
 
-    @media(max-width:600px){
+    @media(max-width:600px) {
+      .main {
+        padding: 14px;
+      }
 
-      .profile{
-        padding:8px 0px;
-        background:none;
-        border:none;
+      .page-title {
+        font-size: 28px;
+      }
+
+      .profile {
+        padding: 8px 0;
+        background: none;
+        border: none;
       }
 
       .profile h4,
-      .profile p{
-        display:none;
+      .profile p {
+        display: none;
       }
 
-      .main{
-        padding:15px;
+      .profile-icon {
+        width: 36px;
+        height: 36px;
+        font-size: 15px;
       }
 
-      .table-box,
-      .activity{
-        padding:18px;
+      .projects-grid {
+        grid-template-columns: 1fr;
       }
 
-      .profile-icon{
-        width:32px;
-        height:32px;
-        font-size:14px;
+      .cards {
+        grid-template-columns: 1fr 1fr;
       }
 
-      .menulogo{
-        gap:10px;
-      }
-
-      .logo img{
-        width:140px;
-      }
-
-      .topbar{
-        align-items:center;
-      }
-
+         /* BUTTONS */
+    .btn-primary{
+      padding: 8px 22px;
     }
+  }
 
+    @media(max-width:400px) {
+      .cards {
+        grid-template-columns: 1fr;
+      }
+    }
   </style>
 </head>
+
 <body>
 
   <div class="overlay" id="overlay"></div>
 
   <!-- SIDEBAR -->
-
   <div class="sidebar" id="sidebar">
-
     <div class="sidebar-top">
-
       <div class="sidelogo">
-        <img src="./src/logo.webp" alt="company logo">
+        <img src="./src/logo.webp" alt="Stacky Logo" class=" logolink">
       </div>
-
-      <div class="close-btn" id="closeBtn">
-        <i class="fa-solid fa-xmark"></i>
-      </div>
-
+      <div class="close-btn" id="closeBtn"><i class="fa-solid fa-xmark"></i></div>
     </div>
-
     <ul>
-
-      <li>
-        <a href="client.html" class="active">
-          <i class="fa-solid fa-house"></i>
-          <span>Dashboard</span>
-        </a>
+      <li><a onclick="showPage('dashboard')" id="nav-dashboard" class="active"><i
+            class="fa-solid fa-grid-2"></i><span>Dashboard</span></a></li>
+      <li><a onclick="showPage('users')" id="nav-users"><i class="fa-solid fa-cart-shopping"></i><span>My Orders</span></a>
       </li>
-
-      <li>
-        <a href="#">
-          <i class="fa-solid fa-folder-open"></i>
-          <span>My Projects</span>
-        </a>
+      <li><a onclick="showPage('projects')" id="nav-projects"><i
+            class="fa-solid fa-layer-group"></i><span>Services</span></a></li>
+      <li><a onclick="showPage('reports')" id="nav-reports"><i
+            class="fa-solid fa-credit-card"></i><span>Payments</span></a></li>
+      <li><a onclick="showPage('settings')" id="nav-settings"><i class="fa-solid fa-user"></i><span>Profile</span></a>
       </li>
-
-      <li>
-        <a href="#">
-          <i class="fa-solid fa-list-check"></i>
-          <span>Tasks</span>
-        </a>
-      </li>
-
-      <li>
-        <a href="#">
-          <i class="fa-solid fa-file-lines"></i>
-          <span>Reports</span>
-        </a>
-      </li>
-
-      <li>
-        <a href="#">
-          <i class="fa-solid fa-comments"></i>
-          <span>Messages</span>
-        </a>
-      </li>
-
-      <li>
-        <a href="#">
-          <i class="fa-solid fa-gear"></i>
-          <span>Settings</span>
-        </a>
-      </li>
-
       <li>
         <a href="#" onclick="logoutUser()">
           <i class="fa-solid fa-right-from-bracket"></i>
           <span>Logout</span>
         </a>
       </li>
-
     </ul>
-
   </div>
 
   <!-- MAIN -->
-
   <div class="main">
-
     <!-- TOPBAR -->
-
     <div class="topbar">
-
       <div class="menulogo">
-
-        <div class="menu-btn" id="menuBtn">
-          <i class="fa-solid fa-bars"></i>
+        <div class="menu-btn" id="menuBtn"><i class="fa-solid fa-bars"></i></div>
+        <div class="topbar-logo">
+          <img src="./src/logo.webp" alt="Stacky Logo" class=" logolink">
         </div>
-
-        <div class="logo">
-          <img src="./src/logo.webp" alt="company logo">
-        </div>
-
       </div>
-
-      <!-- PROFILE -->
-
       <div class="profile">
-
         <div class="profile-icon" id="profileIcon"></div>
-
         <div>
           <h4 id="userName"></h4>
-          <p>Client</p>
+          <p>Client Panel</p>
         </div>
-
       </div>
-
     </div>
 
-    <!-- CARDS -->
-
-    <div class="cardwraper">
-
-      <h1>Client Dashboard</h1>
-
+    <!-- ===== DASHBOARD PAGE ===== -->
+    <div class="page active" id="page-dashboard">
+      <div class="page-header">
+        <h1 class="page-title">Client Dashboard</h1>
+      </div>
       <div class="cards">
-
-        <div class="card">
-          <i class="fa-solid fa-folder-open"></i>
-          <h2>12</h2>
-          <p>Active Projects</p>
+        <div class="card"><i class="fa-solid fa-users"></i>
+          <h2>120</h2>
+          <p>Total Orders</p>
+          <div class="trend up"><i class="fa-solid fa-arrow-up"></i> 12% increase</div>
         </div>
-
-        <div class="card">
-          <i class="fa-solid fa-list-check"></i>
-          <h2>28</h2>
-          <p>Pending Tasks</p>
+        <div class="card"><i class="fa-solid fa-briefcase"></i>
+          <h2>15</h2>
+          <p>Total Services</p>
+          <div class="trend up"><i class="fa-solid fa-arrow-up"></i> 2 pending</div>
         </div>
-
-        <div class="card">
-          <i class="fa-solid fa-clock"></i>
-          <h2>6</h2>
-          <p>Upcoming Meetings</p>
+        <div class="card"><i class="fa-solid fa-dollar-sign"></i>
+          <h2>98</h2>
+          <p>Completed Orders</p>
+          <div class="trend up"><i class="fa-solid fa-arrow-up"></i> Successfully delivered</div>
         </div>
-
-        <div class="card">
-          <i class="fa-solid fa-chart-line"></i>
-          <h2>82%</h2>
-          <p>Project Progress</p>
+        <div class="card"><i class="fa-solid fa-chart-line"></i>
+          <h2>₹45K</h2>
+          <p>Growth Rate</p>
+          <div class="trend down"><i class="fa-solid fa-arrow-down"></i> Paid successfully</div>
         </div>
-
       </div>
-
+      <div class="dash-content">
+        <div class="table-box">
+          <div class="section-title">
+            <h2>Recent Orders</h2>
+          </div>
+          <table>
+            <tr>
+              <th>Name</th>
+              <th>Project</th>
+              <th>Status</th>
+            </tr>
+            <tr>
+              <td>#1001</td>
+              <td>Photo Frame Design</td>
+              <td><span class="status active-status">Active</span></td>
+            </tr>
+            <tr>
+              <td>#1002</td>
+              <td>Website Design</td>
+              <td><span class="status pending-status">Pending</span></td>
+            </tr>
+            <tr>
+              <td>#1003</td>
+              <td>Logo Design</td>
+              <td><span class="status active-status">Active</span></td>
+            </tr>
+            <tr>
+              <td>Vijay</td>
+              <td>Ecommerce Store</td>
+              <td><span class="status active-status">Active</span></td>
+            </tr>
+          </table>
+        </div>
+        <div class="activity">
+          <div class="section-title">
+            <h2>Recent Activity</h2>
+          </div>
+          <div class="activity-item">
+            <div class="act-icon"><i class="fa-solid fa-user-plus"></i></div>
+            <div>
+              <h4>New Order Placed</h4>
+              <p>Your recent order has been received.</p>
+            </div>
+          </div>
+          <div class="activity-item">
+            <div class="act-icon"><i class="fa-solid fa-chart-column"></i></div>
+            <div>
+              <h4>Payment Successful</h4>
+              <p>Your payment was completed successfully.</p>
+            </div>
+          </div>
+          <div class="activity-item">
+            <div class="act-icon"><i class="fa-solid fa-check"></i></div>
+            <div>
+              <h4>Order Delivered</h4>
+              <p>Your order has been delivered.</p>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
 
-    <!-- CONTENT -->
-
-    <div class="content">
-
-      <!-- PROJECT TABLE -->
-
+    <!-- ===== MANAGE USERS PAGE ===== -->
+    <div class="page" id="page-users">
+      <div class="page-header">
+        <h1 class="page-title">My Orders</h1>
+        <button class="btn-primary" onclick="openModal('userModal')"><i class="fa-solid fa-plus"></i> Add User</button>
+      </div>
+      <div class="search-filter">
+        <div class="search-box"><i class="fa-solid fa-magnifying-glass"></i><input type="text"
+            placeholder="Search users..." id="userSearch" oninput="filterUsers()"></div>
+        <select class="filter-select" id="userStatusFilter" onchange="filterUsers()">
+          <option value="">All Status</option>
+          <option>Active</option>
+          <option>Inactive</option>
+          <option>Pending</option>
+        </select>
+      </div>
       <div class="table-box">
-
-        <div class="section-title">
-          <h2>My Projects</h2>
-        </div>
-
         <table>
-
-          <tr>
-            <th>Project</th>
-            <th>Deadline</th>
-            <th>Status</th>
-          </tr>
-
-          <tr>
-            <td>Business Website</td>
-            <td>12 Jun 2026</td>
-            <td>
-              <span class="status active-status">
-                In Progress
-              </span>
-            </td>
-          </tr>
-
-          <tr>
-            <td>Mobile App UI</td>
-            <td>20 Jun 2026</td>
-            <td>
-              <span class="status pending-status">
-                Pending
-              </span>
-            </td>
-          </tr>
-
-          <tr>
-            <td>SEO Optimization</td>
-            <td>28 Jun 2026</td>
-            <td>
-              <span class="status active-status">
-                Completed
-              </span>
-            </td>
-          </tr>
-
-          <tr>
-            <td>Ecommerce Store</td>
-            <td>30 Jun 2026</td>
-            <td>
-              <span class="status active-status">
-                Running
-              </span>
-            </td>
-          </tr>
-
+          <thead>
+            <tr>
+              <th>User</th>
+              <th>Email</th>
+              <th>Role</th>
+              <th>Status</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="userTableBody">
+            <tr>
+              <td>
+                <div class="user-cell">
+                  <div class="user-avatar">N</div><span>Nirmal Kumar</span>
+                </div>
+              </td>
+              <td>nirmal@example.com</td>
+              <td>Admin</td>
+              <td><span class="status active-status">Active</span></td>
+              <td>
+                <div class="action-btns"><button class="action-btn edit-btn errorpage"><i
+                      class="fa-solid fa-pen"></i></button><button class="action-btn delete-btn"
+                    onclick="delRow(this)"><i class="fa-solid fa-trash"></i></button></div>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <div class="user-cell">
+                  <div class="user-avatar">R</div><span>Rahul</span>
+                </div>
+              </td>
+              <td>rahul@example.com</td>
+              <td>Editor</td>
+              <td><span class="status pending-status">Pending</span></td>
+              <td>
+                <div class="action-btns"><button class="action-btn edit-btn errorpage"><i
+                      class="fa-solid fa-pen"></i></button><button class="action-btn delete-btn"
+                    onclick="delRow(this)"><i class="fa-solid fa-trash"></i></button></div>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <div class="user-cell">
+                  <div class="user-avatar">A</div><span>Arun</span>
+                </div>
+              </td>
+              <td>arun@example.com</td>
+              <td>Viewer</td>
+              <td><span class="status active-status">Active</span></td>
+              <td>
+                <div class="action-btns"><button class="action-btn edit-btn errorpage"><i
+                      class="fa-solid fa-pen"></i></button><button class="action-btn delete-btn"
+                    onclick="delRow(this)"><i class="fa-solid fa-trash"></i></button></div>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <div class="user-cell">
+                  <div class="user-avatar">V</div><span>Vijay</span>
+                </div>
+              </td>
+              <td>vijay@example.com</td>
+              <td>Editor</td>
+              <td><span class="status inactive-status">Inactive</span></td>
+              <td>
+                <div class="action-btns"><button class="action-btn edit-btn errorpage"><i
+                      class="fa-solid fa-pen"></i></button><button class="action-btn delete-btn"
+                    onclick="delRow(this)"><i class="fa-solid fa-trash"></i></button></div>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <div class="user-cell">
+                  <div class="user-avatar">S</div><span>Sundar</span>
+                </div>
+              </td>
+              <td>sundar@example.com</td>
+              <td>Viewer</td>
+              <td><span class="status active-status">Active</span></td>
+              <td>
+                <div class="action-btns"><button class="action-btn edit-btn errorpage"><i
+                      class="fa-solid fa-pen"></i></button><button class="action-btn delete-btn"
+                    onclick="delRow(this)"><i class="fa-solid fa-trash"></i></button></div>
+              </td>
+            </tr>
+          </tbody>
         </table>
-
+        <div class="pagination">
+          <button class="page-btn active">1</button>
+          <button class="page-btn errorpage">2</button>
+          <button class="page-btn errorpage">3</button>
+          <button class="page-btn errorpage"><i class="fa-solid fa-chevron-right"></i></button>
+        </div>
       </div>
-
-      <!-- ACTIVITY -->
-
-      <div class="activity">
-
-        <div class="section-title">
-          <h2>Recent Updates</h2>
-        </div>
-
-        <div class="activity-item">
-
-          <i class="fa-solid fa-check"></i>
-
-          <div>
-            <h4>Project Updated</h4>
-            <p>Your website homepage design was updated.</p>
-          </div>
-
-        </div>
-
-        <div class="activity-item">
-
-          <i class="fa-solid fa-message"></i>
-
-          <div>
-            <h4>New Message</h4>
-            <p>You received a message from the admin team.</p>
-          </div>
-
-        </div>
-
-        <div class="activity-item">
-
-          <i class="fa-solid fa-calendar"></i>
-
-          <div>
-            <h4>Meeting Scheduled</h4>
-            <p>Your next meeting is on Friday at 4 PM.</p>
-          </div>
-
-        </div>
-
-      </div>
-
     </div>
 
+    <!-- ===== PROJECTS PAGE ===== -->
+    <div class="page" id="page-projects">
+      <div class="page-header">
+        <h1 class="page-title">Services</h1>
+        <button class="btn-primary" onclick="openModal('projectModal')"><i class="fa-solid fa-plus"></i> New
+          Project</button>
+      </div>
+      <div class="cards">
+        <div class="card"><i class="fa-solid fa-briefcase"></i>
+          <h2>320</h2>
+          <p>Total Services</p>
+        </div>
+        <div class="card"><i class="fa-solid fa-spinner"></i>
+          <h2>45</h2>
+          <p>In Progress</p>
+        </div>
+        <div class="card"><i class="fa-solid fa-circle-check"></i>
+          <h2>260</h2>
+          <p>Completed</p>
+        </div>
+        <div class="card"><i class="fa-solid fa-clock"></i>
+          <h2>15</h2>
+          <p>Pending</p>
+        </div>
+      </div>
+      <div class="search-filter">
+        <div class="search-box"><i class="fa-solid fa-magnifying-glass"></i><input type="text"
+            placeholder="Search projects..."></div>
+        <select class="filter-select">
+          <option value="">All Status</option>
+          <option>Active</option>
+          <option>Pending</option>
+          <option>Completed</option>
+        </select>
+      </div>
+      <div class="projects-grid" id="projectsGrid">
+        <div class="project-card">
+          <div class="project-top">
+            <div class="project-icon"><i class="fa-solid fa-globe"></i></div>
+            <div class="project-actions"><button class="action-btn edit-btn errorpage"><i
+                  class="fa-solid fa-pen"></i></button><button class="action-btn delete-btn" onclick="delCard(this)"><i
+                  class="fa-solid fa-trash"></i></button></div>
+          </div>
+          <div class="project-name">Business Website</div>
+          <div class="project-client"><i class="fa-solid fa-user"></i>Nirmal Kumar</div>
+          <div class="progress-label"><span>Progress</span><span>75%</span></div>
+          <div class="progress-bar">
+            <div class="progress-fill" style="width:75%"></div>
+          </div>
+          <div class="project-footer"><span class="status active-status">Active</span><span class="deadline"><i
+                class="fa-solid fa-calendar"></i>Jul 30, 2025</span></div>
+        </div>
+        <div class="project-card">
+          <div class="project-top">
+            <div class="project-icon"><i class="fa-solid fa-mobile-screen"></i></div>
+            <div class="project-actions"><button class="action-btn edit-btn errorpage"><i
+                  class="fa-solid fa-pen"></i></button><button class="action-btn delete-btn" onclick="delCard(this)"><i
+                  class="fa-solid fa-trash"></i></button></div>
+          </div>
+          <div class="project-name">Mobile App</div>
+          <div class="project-client"><i class="fa-solid fa-user"></i>Rahul</div>
+          <div class="progress-label"><span>Progress</span><span>30%</span></div>
+          <div class="progress-bar">
+            <div class="progress-fill" style="width:30%"></div>
+          </div>
+          <div class="project-footer"><span class="status pending-status">Pending</span><span class="deadline"><i
+                class="fa-solid fa-calendar"></i>Aug 15, 2025</span></div>
+        </div>
+        <div class="project-card">
+          <div class="project-top">
+            <div class="project-icon"><i class="fa-solid fa-magnifying-glass-chart"></i></div>
+            <div class="project-actions"><button class="action-btn edit-btn errorpage"><i
+                  class="fa-solid fa-pen"></i></button><button class="action-btn delete-btn" onclick="delCard(this)"><i
+                  class="fa-solid fa-trash"></i></button></div>
+          </div>
+          <div class="project-name">SEO Optimization</div>
+          <div class="project-client"><i class="fa-solid fa-user"></i>Arun</div>
+          <div class="progress-label"><span>Progress</span><span>90%</span></div>
+          <div class="progress-bar">
+            <div class="progress-fill" style="width:90%"></div>
+          </div>
+          <div class="project-footer"><span class="status active-status">Active</span><span class="deadline"><i
+                class="fa-solid fa-calendar"></i>Jun 20, 2025</span></div>
+        </div>
+        <div class="project-card">
+          <div class="project-top">
+            <div class="project-icon"><i class="fa-solid fa-cart-shopping"></i></div>
+            <div class="project-actions"><button class="action-btn edit-btn errorpage"><i
+                  class="fa-solid fa-pen"></i></button><button class="action-btn delete-btn" onclick="delCard(this)"><i
+                  class="fa-solid fa-trash"></i></button></div>
+          </div>
+          <div class="project-name">Ecommerce Store</div>
+          <div class="project-client"><i class="fa-solid fa-user"></i>Vijay</div>
+          <div class="progress-label"><span>Progress</span><span>100%</span></div>
+          <div class="progress-bar">
+            <div class="progress-fill" style="width:100%"></div>
+          </div>
+          <div class="project-footer"><span class="status completed-status">Completed</span><span class="deadline"><i
+                class="fa-solid fa-calendar"></i>May 10, 2025</span></div>
+        </div>
+        <div class="project-card">
+          <div class="project-top">
+            <div class="project-icon"><i class="fa-solid fa-palette"></i></div>
+            <div class="project-actions"><button class="action-btn edit-btn errorpage"><i
+                  class="fa-solid fa-pen"></i></button><button class="action-btn delete-btn" onclick="delCard(this)"><i
+                  class="fa-solid fa-trash"></i></button></div>
+          </div>
+          <div class="project-name">Brand Identity</div>
+          <div class="project-client"><i class="fa-solid fa-user"></i>Sundar</div>
+          <div class="progress-label"><span>Progress</span><span>55%</span></div>
+          <div class="progress-bar">
+            <div class="progress-fill" style="width:55%"></div>
+          </div>
+          <div class="project-footer"><span class="status active-status">Active</span><span class="deadline"><i
+                class="fa-solid fa-calendar"></i>Sep 01, 2025</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== REPORTS PAGE ===== -->
+    <div class="page" id="page-reports">
+      <div class="page-header">
+        <h1 class="page-title">Payments</h1>
+        <button class="btn-primary errorpage"><i class="fa-solid fa-download"></i> Export</button>
+      </div>
+      <div class="filter-tabs">
+        <button class="tab-btn active errorpage">Weekly</button>
+        <button class="tab-btn errorpage">Monthly</button>
+        <button class="tab-btn errorpage">Yearly</button>
+      </div>
+      <div class="cards">
+        <div class="card"><i class="fa-solid fa-dollar-sign"></i>
+          <h2>$58K</h2>
+          <p>Completed Orders</p>
+          <div class="trend up"><i class="fa-solid fa-arrow-up"></i> 22%</div>
+        </div>
+        <div class="card"><i class="fa-solid fa-users"></i>
+          <h2>1,250</h2>
+          <p>Total Orders</p>
+          <div class="trend up"><i class="fa-solid fa-arrow-up"></i> 15%</div>
+        </div>
+        <div class="card"><i class="fa-solid fa-briefcase"></i>
+          <h2>320</h2>
+          <p>Services Done</p>
+          <div class="trend up"><i class="fa-solid fa-arrow-up"></i> 8%</div>
+        </div>
+        <div class="card"><i class="fa-solid fa-chart-pie"></i>
+          <h2>89%</h2>
+          <p>Growth Rate</p>
+          <div class="trend down"><i class="fa-solid fa-arrow-down"></i> 2%</div>
+        </div>
+      </div>
+    
+      <div class="charts-row2">
+        <div class="chart-box">
+          <h2>User Growth</h2><canvas id="userChart"></canvas>
+        </div>
+        <div class="chart-box">
+          <h2>Top Categories</h2><canvas id="categoryChart"></canvas>
+        </div>
+      </div>
+        <div class="charts-grid">
+        <div class="chart-box">
+          <h2>Revenue Overview</h2><canvas id="revenueChart"></canvas>
+        </div>
+        <!-- <div class="chart-box">
+          <h2>Project Status</h2><canvas id="statusChart"></canvas>
+        </div> -->
+      </div>
+    </div>
+
+    <!-- ===== SETTINGS PAGE ===== -->
+    <div class="page" id="page-settings">
+      <div class="page-header">
+        <h1 class="page-title">Settings</h1>
+      </div>
+      <div class="settings-layout">
+        <div class="settings-nav">
+          <div class="settings-nav-item s-active" onclick="scrollToPanel('sp-profile',this)"><i
+              class="fa-solid fa-user"></i> Profile</div>
+          <div class="settings-nav-item" onclick="scrollToPanel('sp-account',this)"><i class="fa-solid fa-lock"></i>
+            Account</div>
+          <div class="settings-nav-item" onclick="scrollToPanel('sp-notif',this)"><i class="fa-solid fa-bell"></i>
+            Notifications</div>
+          <div class="settings-nav-item" onclick="scrollToPanel('sp-appear',this)"><i class="fa-solid fa-palette"></i>
+            Appearance</div>
+          <div class="settings-nav-item" onclick="scrollToPanel('sp-danger',this)"><i
+              class="fa-solid fa-triangle-exclamation"></i> Danger Zone</div>
+        </div>
+        <div class="settings-content">
+          <!-- Profile -->
+          <div class="settings-panel" id="sp-profile">
+            <div class="panel-title">
+              <div class="p-icon"><i class="fa-solid fa-user"></i></div>
+              <h2>Profile Settings</h2>
+            </div>
+            <div class="avatar-row">
+              <div class="big-avatar" id="bigAvatar"></div>
+              <div><button class="change-photo-btn"><i class="fa-solid fa-camera"></i> Change Photo</button>
+                <p class="avatar-info" style="font-size:12px;color:#94a3b8;margin-top:5px;">JPG, PNG max 2MB</p>
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group"><label>First Name</label><input type="text" value="Nirmal"></div>
+              <div class="form-group"><label>Last Name</label><input type="text" value="Kumar"></div>
+            </div>
+            <div class="form-group"><label>Email Address</label><input type="email" id="settingsEmail"
+                placeholder="Email"></div>
+            <div class="form-group"><label>Phone</label><input type="tel" placeholder="+91 9XXXXXXXXX"></div>
+            <div class="form-group"><label>Bio</label><textarea rows="3" placeholder="Short bio..."></textarea></div>
+            <button class="save-btn" onclick="showToast()"><i class="fa-solid fa-floppy-disk"></i> Save Profile</button>
+          </div>
+          <!-- Account -->
+          <div class="settings-panel" id="sp-account">
+            <div class="panel-title">
+              <div class="p-icon"><i class="fa-solid fa-lock"></i></div>
+              <h2>Account & Password</h2>
+            </div>
+            <div class="form-group"><label>Current Password</label><input type="password"
+                placeholder="Current password"></div>
+            <div class="form-row">
+              <div class="form-group"><label>New Password</label><input type="password" placeholder="New password">
+              </div>
+              <div class="form-group"><label>Confirm Password</label><input type="password" placeholder="Confirm"></div>
+            </div>
+            <div class="form-row">
+              <div class="form-group"><label>Language</label><select>
+                  <option>English</option>
+                  <option>Tamil</option>
+                  <option>Hindi</option>
+                </select></div>
+              <div class="form-group"><label>Timezone</label><select>
+                  <option>Asia/Kolkata (IST)</option>
+                  <option>UTC</option>
+                </select></div>
+            </div>
+            <button class="save-btn" onclick="showToast()"><i class="fa-solid fa-floppy-disk"></i> Update
+              Password</button>
+          </div>
+          <!-- Notifications -->
+          <div class="settings-panel" id="sp-notif">
+            <div class="panel-title">
+              <div class="p-icon"><i class="fa-solid fa-bell"></i></div>
+              <h2>Notifications</h2>
+            </div>
+            <div class="toggle-row">
+              <div class="toggle-info">
+                <h4>Email Notifications</h4>
+                <p>Receive updates via email</p>
+              </div><label class="toggle"><input type="checkbox" checked><span class="slider"></span></label>
+            </div>
+            <div class="toggle-row">
+              <div class="toggle-info">
+                <h4>SMS Notifications</h4>
+                <p>Get SMS alerts for activity</p>
+              </div><label class="toggle"><input type="checkbox"><span class="slider"></span></label>
+            </div>
+            <div class="toggle-row">
+              <div class="toggle-info">
+                <h4>Project Updates</h4>
+                <p>Notify on project status changes</p>
+              </div><label class="toggle"><input type="checkbox" checked><span class="slider"></span></label>
+            </div>
+            <div class="toggle-row">
+              <div class="toggle-info">
+                <h4>New User Registration</h4>
+                <p>Alert when new users register</p>
+              </div><label class="toggle"><input type="checkbox" checked><span class="slider"></span></label>
+            </div>
+            <div class="toggle-row">
+              <div class="toggle-info">
+                <h4>Weekly Report</h4>
+                <p>Receive weekly summary report</p>
+              </div><label class="toggle"><input type="checkbox"><span class="slider"></span></label>
+            </div>
+            <button class="save-btn" style="margin-top:16px;" onclick="showToast()"><i
+                class="fa-solid fa-floppy-disk"></i> Save Preferences</button>
+          </div>
+          <!-- Appearance -->
+          <div class="settings-panel" id="sp-appear">
+            <div class="panel-title">
+              <div class="p-icon"><i class="fa-solid fa-palette"></i></div>
+              <h2>Appearance</h2>
+            </div>
+            <div class="form-row">
+              <div class="form-group"><label>Theme</label><select>
+                  <option>Dark (Default)</option>
+                  <option>Light</option>
+                  <option>System</option>
+                </select></div>
+              <div class="form-group"><label>Sidebar Style</label><select>
+                  <option>Expanded</option>
+                  <option>Collapsed</option>
+                </select></div>
+            </div>
+            <div class="toggle-row">
+              <div class="toggle-info">
+                <h4>Compact Mode</h4>
+                <p>Reduce padding and spacing</p>
+              </div><label class="toggle"><input type="checkbox"><span class="slider"></span></label>
+            </div>
+            <div class="toggle-row">
+              <div class="toggle-info">
+                <h4>Animations</h4>
+                <p>Enable UI animations</p>
+              </div><label class="toggle"><input type="checkbox" checked><span class="slider"></span></label>
+            </div>
+            <button class="save-btn" style="margin-top:16px;" onclick="showToast()"><i
+                class="fa-solid fa-floppy-disk"></i> Save Appearance</button>
+          </div>
+          <!-- Danger Zone -->
+          <div class="settings-panel danger-zone-panel" id="sp-danger">
+            <div class="panel-title">
+              <div class="p-icon"><i class="fa-solid fa-triangle-exclamation"></i></div>
+              <h2>Danger Zone</h2>
+            </div>
+            <div class="danger-item">
+              <div class="danger-info">
+                <h4>Export All Data</h4>
+                <p>Download all account data</p>
+              </div><button class="danger-btn errorpage"><i class="fa-solid fa-download "></i> Export</button>
+            </div>
+            <div class="danger-item">
+              <div class="danger-info">
+                <h4>Deactivate Account</h4>
+                <p>Temporarily disable your account</p>
+              </div><button class="danger-btn errorpage"><i class="fa-solid fa-pause"></i> Deactivate</button>
+            </div>
+            <div class="danger-item">
+              <div class="danger-info">
+                <h4>Delete Account</h4>
+                <p>Permanently delete your account</p>
+              </div><button class="danger-btn" onclick="if(confirm('Are you sure?'))showToast('Account deleted!')"><i
+                  class="fa-solid fa-trash"></i> Delete</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- end .main -->
+
+  <!-- USER MODAL -->
+  <div class="modal-overlay" id="userModal">
+    <div class="modal">
+      <button class="modal-close" onclick="closeModal('userModal')"><i class="fa-solid fa-xmark"></i></button>
+      <h2>Add New User</h2>
+      <div class="form-group"><label>Full Name</label><input type="text" placeholder="Full name" id="uName"></div>
+      <div class="form-group"><label>Email</label><input type="email" placeholder="Email" id="uEmail"></div>
+      <div class="form-group"><label>Role</label><select id="uRole">
+          <option>Admin</option>
+          <option>Editor</option>
+          <option>Viewer</option>
+        </select></div>
+      <div class="form-group"><label>Status</label><select id="uStatus">
+          <option>Active</option>
+          <option>Inactive</option>
+          <option>Pending</option>
+        </select></div>
+      <div class="modal-footer">
+        <button class="cancel-btn" onclick="closeModal('userModal')">Cancel</button>
+        <button class="save-btn" onclick="addUser()">Add User</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- PROJECT MODAL -->
+  <div class="modal-overlay" id="projectModal">
+    <div class="modal">
+      <button class="modal-close" onclick="closeModal('projectModal')"><i class="fa-solid fa-xmark"></i></button>
+      <h2>Add New Project</h2>
+      <div class="form-group"><label>Project Name</label><input type="text" placeholder="Project name" id="pName"></div>
+      <div class="form-group"><label>Client Name</label><input type="text" placeholder="Client name" id="pClient"></div>
+      <div class="form-group"><label>Deadline</label><input type="date" id="pDeadline"></div>
+      <div class="form-group"><label>Status</label><select id="pStatus">
+          <option>Active</option>
+          <option>Pending</option>
+          <option>Completed</option>
+        </select></div>
+      <div class="modal-footer">
+        <button class="cancel-btn" onclick="closeModal('projectModal')">Cancel</button>
+        <button class="save-btn" onclick="addProject()">Add Project</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- TOAST -->
+  <div class="toast" id="toast"><i class="fa-solid fa-circle-check"></i> <span id="toastMsg">Saved successfully!</span>
   </div>
 
   <script>
-
-    // USER EMAIL
-
-    let userEmail = localStorage.getItem("userEmail") || "Client";
-
+    // USER
+    let userEmail = localStorage.getItem("userEmail") || "Admin";
     document.getElementById("userName").innerHTML = userEmail;
+    document.getElementById("profileIcon").innerHTML = userEmail.charAt(0).toUpperCase();
+    document.getElementById("bigAvatar").innerHTML = userEmail.charAt(0).toUpperCase();
+    if (document.getElementById("settingsEmail")) document.getElementById("settingsEmail").value = userEmail;
 
-    let firstLetter = userEmail.charAt(0);
+    function logoutUser() {
 
-    document.getElementById("profileIcon").innerHTML = firstLetter;
-
-    // LOGOUT
-
-    function logoutUser(){
-
-      localStorage.removeItem("userEmail");
-
+      // REDIRECT TO LOGIN PAGE
       window.location.href = "index.html";
 
     }
 
     // SIDEBAR TOGGLE
+    const menuBtn = document.getElementById("menuBtn"), sidebar = document.getElementById("sidebar"), closeBtn = document.getElementById("closeBtn"), overlay = document.getElementById("overlay");
+    menuBtn.addEventListener("click", () => { sidebar.classList.add("active"); overlay.classList.add("show"); });
+    closeBtn.addEventListener("click", () => closeSidebar());
+    overlay.addEventListener("click", () => closeSidebar());
+    function closeSidebar() { sidebar.classList.remove("active"); overlay.classList.remove("show"); }
 
-    const menuBtn = document.getElementById("menuBtn");
-    const sidebar = document.getElementById("sidebar");
-    const closeBtn = document.getElementById("closeBtn");
-    const overlay = document.getElementById("overlay");
+    // PAGE NAVIGATION
+    let chartsInit = false;
+    function showPage(name) {
+      document.querySelectorAll(".page").forEach(p => p.classList.remove("active"));
+      document.querySelectorAll(".sidebar ul li a").forEach(a => a.classList.remove("active"));
+      document.getElementById("page-" + name).classList.add("active");
+      const navEl = document.getElementById("nav-" + name);
+      if (navEl) navEl.classList.add("active");
+      window.scrollTo(0, 0);
+      if (name === "reports" && !chartsInit) { initCharts(); chartsInit = true; }
+      closeSidebar();
+    }
 
-    menuBtn.addEventListener("click", () => {
-      sidebar.classList.add("active");
-      overlay.classList.add("show");
+    // PAGINATION
+    document.querySelectorAll(".page-btn").forEach(btn => {
+      btn.addEventListener("click", function () {
+        this.closest(".pagination").querySelectorAll(".page-btn").forEach(b => b.classList.remove("active"));
+        this.classList.add("active");
+      });
     });
 
-    closeBtn.addEventListener("click", () => {
-      sidebar.classList.remove("active");
-      overlay.classList.remove("show");
+    // MODAL
+    function openModal(id) { document.getElementById(id).classList.add("show"); }
+    function closeModal(id) { document.getElementById(id).classList.remove("show"); }
+
+    // TOAST
+    function showToast(msg) {
+      document.getElementById("toastMsg").innerText = msg || "Saved successfully!";
+      const t = document.getElementById("toast");
+      t.classList.add("show");
+      setTimeout(() => t.classList.remove("show"), 2600);
+    }
+
+    // ADD USER
+    function addUser() {
+      const name = document.getElementById("uName").value.trim();
+      const email = document.getElementById("uEmail").value.trim();
+      const role = document.getElementById("uRole").value;
+      const status = document.getElementById("uStatus").value;
+      if (!name || !email) { alert("Please fill all fields!"); return; }
+      const sc = status === "Active" ? "active-status" : status === "Pending" ? "pending-status" : "inactive-status";
+      document.getElementById("userTableBody").insertAdjacentHTML("beforeend", `<tr><td><div class="user-cell"><div class="user-avatar">${name[0].toUpperCase()}</div><span>${name}</span></div></td><td>${email}</td><td>${role}</td><td><span class="status ${sc}">${status}</span></td><td><div class="action-btns"><button class="action-btn edit-btn"><i class="fa-solid fa-pen"></i></button><button class="action-btn delete-btn" onclick="delRow(this)"><i class="fa-solid fa-trash"></i></button></div></td></tr>`);
+      closeModal("userModal");
+      document.getElementById("uName").value = ""; document.getElementById("uEmail").value = "";
+      showToast("User added!");
+    }
+
+    function delRow(btn) { if (confirm("Delete this user?")) { btn.closest("tr").remove(); showToast("User deleted!"); } }
+
+    function filterUsers() {
+      const s = document.getElementById("userSearch").value.toLowerCase();
+      const f = document.getElementById("userStatusFilter").value;
+      document.querySelectorAll("#userTableBody tr").forEach(row => {
+        const n = row.cells[0].innerText.toLowerCase();
+        const st = row.cells[3].innerText.trim();
+        row.style.display = (n.includes(s) && (!f || st === f)) ? "" : "none";
+      });
+    }
+
+    // ADD PROJECT
+    function addProject() {
+      const name = document.getElementById("pName").value.trim();
+      const client = document.getElementById("pClient").value.trim();
+      const deadline = document.getElementById("pDeadline").value;
+      const status = document.getElementById("pStatus").value;
+      if (!name || !client) { alert("Please fill all fields!"); return; }
+      const sc = status === "Active" ? "active-status" : status === "Pending" ? "pending-status" : "completed-status";
+      const dl = deadline ? new Date(deadline).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" }) : "N/A";
+      document.getElementById("projectsGrid").insertAdjacentHTML("beforeend", `<div class="project-card"><div class="project-top"><div class="project-icon"><i class="fa-solid fa-briefcase"></i></div><div class="project-actions"><button class="action-btn edit-btn"><i class="fa-solid fa-pen"></i></button><button class="action-btn delete-btn" onclick="delCard(this)"><i class="fa-solid fa-trash"></i></button></div></div><div class="project-name">${name}</div><div class="project-client"><i class="fa-solid fa-user"></i>${client}</div><div class="progress-label"><span>Progress</span><span>0%</span></div><div class="progress-bar"><div class="progress-fill" style="width:0%"></div></div><div class="project-footer"><span class="status ${sc}">${status}</span><span class="deadline"><i class="fa-solid fa-calendar"></i>${dl}</span></div></div>`);
+      closeModal("projectModal");
+      document.getElementById("pName").value = ""; document.getElementById("pClient").value = ""; document.getElementById("pDeadline").value = "";
+      showToast("Project added!");
+    }
+
+    function delCard(btn) { if (confirm("Delete this project?")) { btn.closest(".project-card").remove(); showToast("Project deleted!"); } }
+
+    // SETTINGS NAV
+    function scrollToPanel(id, el) {
+      document.querySelectorAll(".settings-nav-item").forEach(n => n.classList.remove("s-active"));
+      el.classList.add("s-active");
+      document.getElementById(id).scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+
+    function setTab(btn) {
+      document.querySelectorAll(".tab-btn").forEach(b => b.classList.remove("active"));
+      btn.classList.add("active");
+    }
+
+    // CHARTS
+    function initCharts() {
+      Chart.defaults.color = "#94a3b8";
+      Chart.defaults.borderColor = "rgba(255,255,255,0.07)";
+      new Chart(document.getElementById("revenueChart"), { type: "line", data: { labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul"], datasets: [{ label: "Revenue ($K)", data: [30, 42, 35, 50, 45, 58, 52], borderColor: "#d946ef", backgroundColor: "rgba(217,70,239,0.1)", fill: true, tension: 0.4, pointBackgroundColor: "#d946ef", pointRadius: 4 }] }, options: { plugins: { legend: { labels: { color: "#94a3b8" } } }, scales: { x: { ticks: { color: "#94a3b8" } }, y: { ticks: { color: "#94a3b8" } } } } });
+      new Chart(document.getElementById("statusChart"), { type: "doughnut", data: { labels: ["Completed", "Active", "Pending"], datasets: [{ data: [260, 45, 15], backgroundColor: ["rgba(59,130,246,0.7)", "rgba(34,197,94,0.7)", "rgba(234,179,8,0.7)"], borderWidth: 0 }] }, options: { plugins: { legend: { position: "bottom", labels: { color: "#94a3b8" } } }, cutout: "65%" } });
+      new Chart(document.getElementById("userChart"), { type: "bar", data: { labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun"], datasets: [{ label: "New Users", data: [80, 120, 95, 150, 130, 175], backgroundColor: "rgba(59,130,246,0.6)", borderRadius: 6 }] }, options: { plugins: { legend: { labels: { color: "#94a3b8" } } }, scales: { x: { ticks: { color: "#94a3b8" } }, y: { ticks: { color: "#94a3b8" } } } } });
+      new Chart(document.getElementById("categoryChart"), { type: "bar", data: { labels: ["Web", "Mobile", "SEO", "Branding", "Other"], datasets: [{ label: "Services", data: [120, 85, 60, 35, 20], backgroundColor: ["rgba(217,70,239,0.6)", "rgba(59,130,246,0.6)", "rgba(34,197,94,0.6)", "rgba(234,179,8,0.6)", "rgba(239,68,68,0.6)"], borderRadius: 6 }] }, options: { indexAxis: "y", plugins: { legend: { labels: { color: "#94a3b8" } } }, scales: { x: { ticks: { color: "#94a3b8" } }, y: { ticks: { color: "#94a3b8" } } } } });
+    }
+
+
+  const logos = document.querySelectorAll(".logolink");
+
+  logos.forEach((logo) => {
+
+    logo.style.cursor = "pointer";
+
+    logo.addEventListener("click", () => {
+
+      window.location.href = "admin.html";
+
     });
 
-    overlay.addEventListener("click", () => {
-      sidebar.classList.remove("active");
-      overlay.classList.remove("show");
+  });
+
+
+    const errorpage = document.querySelectorAll(".errorpage");
+
+  errorpage.forEach((logo) => {
+
+    logo.style.cursor = "pointer";
+
+    logo.addEventListener("click", () => {
+
+      window.location.href = "404.html";
+
     });
 
+  });
   </script>
-
 </body>
+
 </html>
