@@ -22,26 +22,80 @@
     }
 
     body{
-      background:#0f172a;
+      background:
+      linear-gradient(rgba(8,10,25,0.88),rgba(8,10,25,0.88)),
+      linear-gradient(135deg,#090916,#111827,#0f172a);
       color:#fff;
       min-height:100vh;
-      display:flex;
+      overflow-x:hidden;
+    }
+
+    /* OVERLAY */
+
+    .overlay{
+      position:fixed;
+      width:100%;
+      height:100%;
+      background:rgba(0,0,0,0.5);
+      top:0;
+      left:0;
+      z-index:998;
+      opacity:0;
+      visibility:hidden;
+      transition:0.3s;
+    }
+
+    .overlay.show{
+      opacity:1;
+      visibility:visible;
     }
 
     /* SIDEBAR */
 
     .sidebar{
       width:270px;
-      background:#111827;
+      background:rgba(15,23,42,0.95);
       padding:30px 20px;
       position:fixed;
+      top:0;
+      left:0;
       height:100vh;
-      border-right:1px solid rgba(255,255,255,0.08);
+      border-right:1px solid rgba(168,85,247,0.2);
+      backdrop-filter:blur(12px);
+      z-index:999;
+      transition:0.3s ease;
+    }
+
+    .sidebar.active{
+      left:0;
+    }
+
+    .sidebar-top{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      margin-bottom:20px;
+    }
+
+    .close-btn{
+      display:none;
+      font-size:22px;
+      cursor:pointer;
+      color:#fff;
+    }
+
+    .logo{
+      display:flex;
+      align-items:center;
     }
 
     .logo img{
-        width: 180px;
-        margin-bottom: 40px;
+      width:clamp(140px,18vw,190px);
+    }
+
+    .sidelogo img{
+      display:none;
+      width:150px;
     }
 
     .sidebar ul{
@@ -54,19 +108,30 @@
 
     .sidebar ul li a{
       text-decoration:none;
-      color:#cbd5e1;
+      color:#d1d5db;
       display:flex;
       align-items:center;
       gap:15px;
       padding:15px;
-      border-radius:12px;
+      border-radius:14px;
       transition:0.3s;
       font-size:15px;
+      background:rgba(255,255,255,0.03);
+    }
+
+    .sidebar ul li a i{
+      color:#c084fc;
     }
 
     .sidebar ul li a:hover,
     .sidebar ul li a.active{
-      background:linear-gradient(135deg,#2563eb,#38bdf8);
+      background:linear-gradient(135deg,#d946ef,#3b82f6);
+      color:#fff;
+      box-shadow:0 0 18px rgba(217,70,239,0.35);
+    }
+
+    .sidebar ul li a:hover i,
+    .sidebar ul li a.active i{
       color:#fff;
     }
 
@@ -74,8 +139,9 @@
 
     .main{
       margin-left:270px;
-      width:100%;
+      width:calc(100% - 270px);
       padding:30px;
+      transition:0.3s;
     }
 
     /* TOPBAR */
@@ -85,28 +151,47 @@
       justify-content:space-between;
       align-items:center;
       margin-bottom:35px;
-      flex-wrap:wrap;
       gap:20px;
+      flex-wrap:nowrap;
     }
 
-    .topbar h1{
-      font-size:32px;
+    .menulogo{
+      display:flex;
+      align-items:center;
+      gap:18px;
+    }
+
+    .menu-btn{
+      width:45px;
+      height:45px;
+      background:rgba(255,255,255,0.08);
+      border:1px solid rgba(217,70,239,0.2);
+      border-radius:12px;
+      display:none;
+      justify-content:center;
+      align-items:center;
+      cursor:pointer;
+      font-size:20px;
+      color:#fff;
+      backdrop-filter:blur(10px);
     }
 
     .profile{
       display:flex;
       align-items:center;
       gap:15px;
-      background:#111827;
       padding:10px 18px;
-      border-radius:14px;
+      border-radius:16px;
+      background:rgba(255,255,255,0.05);
+      border:1px solid rgba(217,70,239,0.15);
+      backdrop-filter:blur(10px);
     }
 
     .profile-icon{
       width:50px;
       height:50px;
       border-radius:50%;
-      background:linear-gradient(135deg,#38bdf8,#2563eb);
+      background:linear-gradient(135deg,#d946ef,#3b82f6);
       display:flex;
       justify-content:center;
       align-items:center;
@@ -114,15 +199,26 @@
       font-weight:700;
       color:#fff;
       text-transform:uppercase;
+      box-shadow:0 0 15px rgba(59,130,246,0.4);
     }
 
     .profile h4{
-      font-size:18px;
+      font-size:17px;
     }
 
     .profile p{
       font-size:13px;
-      color:#94a3b8;
+      color:#cbd5e1;
+    }
+
+    /* HEADING */
+
+    .cardwraper h1{
+      font-size:42px;
+      margin-bottom:30px;
+      background:linear-gradient(135deg,#d946ef,#3b82f6);
+      -webkit-background-clip:text;
+      -webkit-text-fill-color:transparent;
     }
 
     /* CARDS */
@@ -135,21 +231,22 @@
     }
 
     .card{
-      background:#111827;
+      background:rgba(17,24,39,0.88);
       padding:25px;
-      border-radius:18px;
-      border:1px solid rgba(255,255,255,0.05);
+      border-radius:22px;
+      border:1px solid rgba(217,70,239,0.15);
+      backdrop-filter:blur(14px);
       transition:0.3s;
     }
 
     .card:hover{
       transform:translateY(-5px);
-      box-shadow:0 10px 25px rgba(0,0,0,0.3);
+      box-shadow:0 0 25px rgba(217,70,239,0.25);
     }
 
     .card i{
       font-size:35px;
-      color:#38bdf8;
+      color:#c084fc;
       margin-bottom:20px;
     }
 
@@ -159,7 +256,7 @@
     }
 
     .card p{
-      color:#94a3b8;
+      color:#cbd5e1;
       font-size:14px;
     }
 
@@ -173,21 +270,21 @@
 
     .table-box,
     .activity{
-      background:#111827;
-      border-radius:18px;
+      background:rgba(17,24,39,0.88);
+      border-radius:22px;
       padding:25px;
-      border:1px solid rgba(255,255,255,0.05);
+      border:1px solid rgba(217,70,239,0.15);
+      backdrop-filter:blur(14px);
+      overflow:auto;
     }
 
     .section-title{
-      display:flex;
-      justify-content:space-between;
-      align-items:center;
       margin-bottom:25px;
     }
 
     .section-title h2{
       font-size:22px;
+      color:#fff;
     }
 
     /* TABLE */
@@ -195,22 +292,23 @@
     table{
       width:100%;
       border-collapse:collapse;
+      min-width:500px;
     }
 
     table tr{
-      border-bottom:1px solid rgba(255,255,255,0.06);
+      border-bottom:1px solid rgba(255,255,255,0.08);
     }
 
     table th{
       text-align:left;
       padding:15px 10px;
-      color:#38bdf8;
+      color:#c084fc;
       font-size:14px;
     }
 
     table td{
       padding:16px 10px;
-      color:#cbd5e1;
+      color:#e5e7eb;
       font-size:14px;
     }
 
@@ -222,12 +320,12 @@
     }
 
     .active-status{
-      background:#14532d;
+      background:rgba(34,197,94,0.15);
       color:#4ade80;
     }
 
     .pending-status{
-      background:#78350f;
+      background:rgba(234,179,8,0.15);
       color:#facc15;
     }
 
@@ -246,9 +344,10 @@
       display:flex;
       justify-content:center;
       align-items:center;
-      background:#1e293b;
-      color:#38bdf8;
+      background:rgba(217,70,239,0.15);
+      color:#c084fc;
       font-size:18px;
+      flex-shrink:0;
     }
 
     .activity-item h4{
@@ -258,7 +357,7 @@
 
     .activity-item p{
       font-size:13px;
-      color:#94a3b8;
+      color:#cbd5e1;
     }
 
     /* RESPONSIVE */
@@ -271,45 +370,100 @@
 
     }
 
-    @media(max-width:900px){
+    @media(max-width:950px){
+
+      .menu-btn{
+        display:flex;
+      }
+
+      .close-btn{
+        display:block;
+      }
+
+      .sidelogo img{
+        display:block;
+      }
 
       .sidebar{
-        width:90px;
-        padding:25px 10px;
-      }
-
-      .sidebar ul li a span{
-        display:none;
-      }
-
-      .sidebar ul li a{
-        justify-content:center;
+        left:-100%;
       }
 
       .main{
-        margin-left:90px;
+        margin-left:0;
+        width:100%;
+        padding:20px;
+      }
+
+    }
+
+    @media(max-width:768px){
+
+      .topbar{
+        gap:15px;
+      }
+
+      .cardwraper h1{
+        font-size:30px;
+      }
+
+      .profile-icon{
+        width:42px;
+        height:42px;
+        font-size:18px;
+      }
+
+      .profile h4{
+        font-size:14px;
+      }
+
+      .profile p{
+        font-size:11px;
+      }
+
+      .cards{
+        grid-template-columns:1fr;
       }
 
     }
 
     @media(max-width:600px){
 
-      .main{
-        padding:20px;
-      }
-
-      .topbar h1{
-        font-size:24px;
-      }
-
       .profile{
-        width:100%;
-        justify-content:center;
+        padding:8px 0px;
+        background:none;
+        border:none;
       }
 
-      table{
-        display:block;
-        overflow-x:auto;
+      .profile h4,
+      .profile p{
+        display:none;
+      }
+
+      .main{
+        padding:15px;
+      }
+
+      .table-box,
+      .activity{
+        padding:18px;
+      }
+
+      .profile-icon{
+        width:32px;
+        height:32px;
+        font-size:14px;
+      }
+
+      .menulogo{
+        gap:10px;
+      }
+
+      .logo img{
+        width:140px;
+      }
+
+      .topbar{
+        align-items:center;
       }
 
     }
@@ -318,19 +472,30 @@
 </head>
 <body>
 
+  <!-- OVERLAY -->
+
+  <div class="overlay" id="overlay"></div>
+
   <!-- SIDEBAR -->
 
+  <div class="sidebar" id="sidebar">
 
-  <div class="sidebar">
+    <div class="sidebar-top">
 
-    <div class="logo">
-      <img src="./src/logo.webp" alt="company logo">
+      <div class="sidelogo">
+        <img src="./src/logo.webp" alt="company logo">
+      </div>
+
+      <div class="close-btn" id="closeBtn">
+        <i class="fa-solid fa-xmark"></i>
+      </div>
+
     </div>
 
     <ul>
 
       <li>
-        <a href="#" class="active">
+        <a href="admin.html" class="active">
           <i class="fa-solid fa-grid-2"></i>
           <span>Dashboard</span>
         </a>
@@ -365,15 +530,10 @@
       </li>
 
       <li>
-
         <a href="#" onclick="logoutUser()">
-
           <i class="fa-solid fa-right-from-bracket"></i>
-
           <span>Logout</span>
-
         </a>
-
       </li>
 
     </ul>
@@ -388,18 +548,27 @@
 
     <div class="topbar">
 
-      <h1>Admin Dashboard</h1>
+      <div class="menulogo">
+
+        <div class="menu-btn" id="menuBtn">
+          <i class="fa-solid fa-bars"></i>
+        </div>
+
+        <div class="logo">
+          <img src="./src/logo.webp" alt="company logo">
+        </div>
+
+      </div>
+
+      <!-- PROFILE -->
 
       <div class="profile">
 
         <div class="profile-icon" id="profileIcon"></div>
 
         <div>
-
           <h4 id="userName"></h4>
-
           <p>Administrator</p>
-
         </div>
 
       </div>
@@ -408,30 +577,36 @@
 
     <!-- CARDS -->
 
-    <div class="cards">
+    <div class="cardwraper">
 
-      <div class="card">
-        <i class="fa-solid fa-users"></i>
-        <h2>1,250</h2>
-        <p>Total Users</p>
-      </div>
+      <h1>Admin Dashboard</h1>
 
-      <div class="card">
-        <i class="fa-solid fa-briefcase"></i>
-        <h2>320</h2>
-        <p>Total Projects</p>
-      </div>
+      <div class="cards">
 
-      <div class="card">
-        <i class="fa-solid fa-dollar-sign"></i>
-        <h2>$58K</h2>
-        <p>Total Revenue</p>
-      </div>
+        <div class="card">
+          <i class="fa-solid fa-users"></i>
+          <h2>1,250</h2>
+          <p>Total Users</p>
+        </div>
 
-      <div class="card">
-        <i class="fa-solid fa-chart-line"></i>
-        <h2>89%</h2>
-        <p>Growth Rate</p>
+        <div class="card">
+          <i class="fa-solid fa-briefcase"></i>
+          <h2>320</h2>
+          <p>Total Projects</p>
+        </div>
+
+        <div class="card">
+          <i class="fa-solid fa-dollar-sign"></i>
+          <h2>$58K</h2>
+          <p>Total Revenue</p>
+        </div>
+
+        <div class="card">
+          <i class="fa-solid fa-chart-line"></i>
+          <h2>89%</h2>
+          <p>Growth Rate</p>
+        </div>
+
       </div>
 
     </div>
@@ -440,7 +615,7 @@
 
     <div class="content">
 
-      <!-- USERS TABLE -->
+      <!-- TABLE -->
 
       <div class="table-box">
 
@@ -460,9 +635,7 @@
             <td>Nirmal Kumar</td>
             <td>Business Website</td>
             <td>
-              <span class="status active-status">
-                Active
-              </span>
+              <span class="status active-status">Active</span>
             </td>
           </tr>
 
@@ -470,9 +643,7 @@
             <td>Rahul</td>
             <td>Mobile App</td>
             <td>
-              <span class="status pending-status">
-                Pending
-              </span>
+              <span class="status pending-status">Pending</span>
             </td>
           </tr>
 
@@ -480,9 +651,7 @@
             <td>Arun</td>
             <td>SEO Optimization</td>
             <td>
-              <span class="status active-status">
-                Active
-              </span>
+              <span class="status active-status">Active</span>
             </td>
           </tr>
 
@@ -490,9 +659,7 @@
             <td>Vijay</td>
             <td>Ecommerce Store</td>
             <td>
-              <span class="status active-status">
-                Active
-              </span>
+              <span class="status active-status">Active</span>
             </td>
           </tr>
 
@@ -541,17 +708,6 @@
 
         </div>
 
-        <div class="activity-item">
-
-          <i class="fa-solid fa-envelope"></i>
-
-          <div>
-            <h4>Support Messages</h4>
-            <p>You received 8 new support requests.</p>
-          </div>
-
-        </div>
-
       </div>
 
     </div>
@@ -560,19 +716,18 @@
 
   <script>
 
-    // EMAIL GET
-    let userEmail = localStorage.getItem("userEmail");
+    // USER EMAIL
 
-    // SHOW EMAIL
+    let userEmail = localStorage.getItem("userEmail") || "Admin";
+
     document.getElementById("userName").innerHTML = userEmail;
 
-    // FIRST LETTER
     let firstLetter = userEmail.charAt(0);
 
-    // PROFILE ICON
     document.getElementById("profileIcon").innerHTML = firstLetter;
 
     // LOGOUT
+
     function logoutUser(){
 
       localStorage.removeItem("userEmail");
@@ -580,6 +735,28 @@
       window.location.href = "index.html";
 
     }
+
+    // SIDEBAR TOGGLE
+
+    const menuBtn = document.getElementById("menuBtn");
+    const sidebar = document.getElementById("sidebar");
+    const closeBtn = document.getElementById("closeBtn");
+    const overlay = document.getElementById("overlay");
+
+    menuBtn.addEventListener("click", () => {
+      sidebar.classList.add("active");
+      overlay.classList.add("show");
+    });
+
+    closeBtn.addEventListener("click", () => {
+      sidebar.classList.remove("active");
+      overlay.classList.remove("show");
+    });
+
+    overlay.addEventListener("click", () => {
+      sidebar.classList.remove("active");
+      overlay.classList.remove("show");
+    });
 
   </script>
 
