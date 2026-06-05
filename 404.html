@@ -1,19 +1,25 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
 
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0">
 
 <title>404 Page</title>
 
 <!-- GOOGLE FONT -->
 
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link
+href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap"
+rel="stylesheet">
 
 <!-- FONT AWESOME -->
 
-<link rel="stylesheet"
+<link
+rel="stylesheet"
 href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"/>
 
 <style>
@@ -25,6 +31,8 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
   padding:0;
   box-sizing:border-box;
 }
+
+/* BODY */
 
 body{
 
@@ -39,8 +47,9 @@ body{
 
   overflow:hidden;
 
-  background:
+  padding:20px;
 
+  background:
   linear-gradient(
   135deg,
   rgba(2,6,23,0.96),
@@ -49,58 +58,14 @@ body{
   );
 }
 
-
-
-/* =========================
-   ANIMATIONS
-========================= */
-
-@keyframes loading{
-
-  0%{
-    left:-40%;
-  }
-
-  100%{
-    left:100%;
-  }
-}
-
-@keyframes logoFloat{
-
-  0%{
-    transform:translateY(0px);
-  }
-
-  50%{
-    transform:translateY(-12px);
-  }
-
-  100%{
-    transform:translateY(0px);
-  }
-}
-
-@keyframes glowMove{
-
-  from{
-    transform:scale(1);
-  }
-
-  to{
-    transform:scale(1.15);
-  }
-}
 /* CONTAINER */
 
 .error-container{
 
+  width:100%;
+  max-width:750px;
 
-
-  width:90%;
-  max-width:900px;
-
-  padding:80px 40px;
+  padding:50px 30px;
 
   text-align:center;
 }
@@ -109,13 +74,13 @@ body{
 
 .error-code{
 
-  font-size:clamp(80px,18vw,220px);
+  font-size:clamp(70px,14vw,170px);
 
   font-weight:800;
 
   line-height:1;
 
-  margin-bottom:20px;
+  margin-bottom:15px;
 
   background:
   linear-gradient(
@@ -130,40 +95,40 @@ body{
   -webkit-text-fill-color:transparent;
 
   filter:
-  drop-shadow(0 0 25px rgba(56,189,248,0.35));
+  drop-shadow(0 0 20px rgba(56,189,248,0.28));
 }
 
 /* TITLE */
 
 .error-title{
 
-  font-size:clamp(25px,5vw,70px);
+  font-size:clamp(24px,4vw,55px);
 
   color:white;
 
   font-weight:700;
 
-  margin-bottom:25px;
+  margin-bottom:18px;
 }
 
 /* TEXT */
 
 .error-text{
 
-  max-width:700px;
+  max-width:580px;
 
   margin:auto;
 
   color:rgba(255,255,255,0.65);
 
-  line-height:1.9;
+  line-height:1.8;
 
-  font-size:18px;
+  font-size:15px;
 
-  margin-bottom:45px;
+  margin-bottom:35px;
 }
 
-/* BUTTONS */
+/* BUTTON AREA */
 
 .error-buttons{
 
@@ -171,22 +136,22 @@ body{
 
   justify-content:center;
 
-  gap:20px;
+  gap:18px;
 
   flex-wrap:wrap;
 }
 
-/* COMMON BUTTON */
+/* BUTTON */
 
 .btn{
 
-  padding:18px 38px;
+  padding:14px 30px;
 
   border-radius:50px;
 
   text-decoration:none;
 
-  font-size:17px;
+  font-size:15px;
 
   font-weight:600;
 
@@ -196,50 +161,31 @@ body{
 
   gap:10px;
 
-  transition:0.4s ease;
+  transition:0.35s ease;
 }
 
 /* PRIMARY BUTTON */
 
 .btn-primary{
 
-  background:linear-gradient(135deg,#7c3aed,#00c2ff);
+  background:
+  linear-gradient(
+  135deg,
+  #7c3aed,
+  #00c2ff
+  );
 
   color:white;
 
   box-shadow:
-  0 0 30px rgba(56,189,248,0.25);
+  0 0 20px rgba(56,189,248,0.22);
 }
 
 .btn-primary:hover{
 
   transform:
-  translateY(-5px)
-  scale(1.03);
-}
-
-/* OUTLINE BUTTON */
-
-.btn-outline{
-
-  background:
-  rgba(255,255,255,0.06);
-
-  border:1px solid
-  rgba(255,255,255,0.08);
-
-  color:white;
-
-  backdrop-filter:blur(15px);
-}
-
-.btn-outline:hover{
-
-  background:
-  rgba(255,255,255,0.12);
-
-  transform:
-  translateY(-5px);
+  translateY(-4px)
+  scale(1.02);
 }
 
 /* RESPONSIVE */
@@ -248,18 +194,20 @@ body{
 
   .error-container{
 
-    padding:60px 20px;
+    padding:40px 18px;
   }
 
   .error-text{
 
-    font-size:14px;
+    font-size:13px;
   }
 
   .btn{
 
+    padding:12px 24px;
 
-    padding:12px 30px;
+    font-size:14px;
+
     justify-content:center;
   }
 
@@ -270,7 +218,6 @@ body{
 </head>
 
 <body>
-
 
 <!-- CONTAINER -->
 
@@ -297,11 +244,12 @@ body{
 
   </p>
 
-  <!-- BUTTONS -->
+  <!-- BUTTON -->
 
   <div class="error-buttons">
 
-    <a href="index.html" class="btn btn-primary">
+    <a href="index.html"
+    class="btn btn-primary">
 
       <i class="fa-solid fa-house"></i>
 
@@ -309,11 +257,10 @@ body{
 
     </a>
 
-
-
   </div>
 
 </div>
 
 </body>
+
 </html>
