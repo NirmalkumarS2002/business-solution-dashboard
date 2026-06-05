@@ -1,0 +1,815 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+  <meta charset="UTF-8" />
+
+  <meta name="viewport"
+    content="width=device-width, initial-scale=1.0" />
+
+  <title>Business Signup</title>
+
+  <!-- GOOGLE FONT -->
+
+  <link rel="preconnect"
+    href="https://fonts.googleapis.com">
+
+  <link
+    href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+    rel="stylesheet">
+
+  <!-- FONT AWESOME -->
+
+  <link rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+
+  <style>
+
+    *{
+      margin:0;
+      padding:0;
+      box-sizing:border-box;
+      font-family:'Poppins',sans-serif;
+    }
+
+    body{
+
+      min-height:100vh;
+
+      background:
+      linear-gradient(rgba(8,10,25,0.92),
+      rgba(8,10,25,0.92)),
+      linear-gradient(135deg,#090916,#111827,#0f172a);
+
+      display:flex;
+      justify-content:center;
+      align-items:center;
+
+      padding:20px;
+
+      overflow-x:hidden;
+    }
+
+    /* MAIN BOX */
+
+    .signup-container{
+
+      width:100%;
+      max-width:950px;
+
+      display:grid;
+      grid-template-columns:1fr 1fr;
+
+      background:rgba(17,24,39,0.92);
+
+      border-radius:24px;
+
+      overflow:hidden;
+
+      border:
+      1px solid rgba(217,70,239,0.15);
+
+      backdrop-filter:blur(14px);
+
+      box-shadow:
+      0 0 25px rgba(217,70,239,0.12);
+    }
+
+    /* LEFT SIDE */
+
+    .left-side{
+
+      padding:40px;
+
+      background:
+      linear-gradient(rgba(15,23,42,0.84),
+      rgba(15,23,42,0.84)),
+      linear-gradient(135deg,#d946ef,#3b82f6);
+
+      display:flex;
+      flex-direction:column;
+      justify-content:center;
+    }
+
+    .left-side h1{
+
+      font-size:38px;
+
+      line-height:1.2;
+
+      color:#fff;
+
+      margin-bottom:18px;
+    }
+
+    .left-side p{
+
+      font-size:14px;
+
+      line-height:1.7;
+
+      color:#dbeafe;
+
+      margin-bottom:28px;
+    }
+
+    .features{
+
+      display:flex;
+      flex-direction:column;
+
+      gap:18px;
+    }
+
+    .feature{
+
+      display:flex;
+      align-items:flex-start;
+
+      gap:12px;
+    }
+
+    .feature i{
+
+      width:42px;
+      height:42px;
+
+      border-radius:12px;
+
+      background:
+      rgba(255,255,255,0.12);
+
+      display:flex;
+      justify-content:center;
+      align-items:center;
+
+      color:#fff;
+
+      font-size:16px;
+
+      flex-shrink:0;
+    }
+
+    .feature h4{
+
+      color:#fff;
+
+      font-size:16px;
+
+      margin-bottom:4px;
+    }
+
+    .feature p{
+
+      margin:0;
+
+      font-size:12px;
+
+      line-height:1.5;
+
+      color:#dbeafe;
+    }
+
+    /* RIGHT SIDE */
+
+    .right-side{
+
+      padding:35px;
+
+      display:flex;
+      flex-direction:column;
+      justify-content:center;
+
+      background:
+      rgba(2,6,23,0.75);
+    }
+
+    .logo{
+
+      text-align:center;
+
+      margin-bottom:14px;
+    }
+
+    .logo img{
+      width:190px;
+    }
+
+    .title{
+
+      text-align:center;
+
+      margin-bottom:24px;
+    }
+
+    .title h1{
+
+      font-size:30px;
+
+      color:#fff;
+
+      margin-bottom:6px;
+    }
+
+    .title p{
+
+      color:#94a3b8;
+
+      font-size:13px;
+    }
+
+    /* FORM */
+
+    form{
+      width:100%;
+    }
+
+    .form-group{
+      margin-bottom:14px;
+    }
+
+    .form-group label{
+
+      display:block;
+
+      margin-bottom:7px;
+
+      color:#c084fc;
+
+      font-size:12px;
+
+      font-weight:500;
+    }
+
+    .input-box{
+      position:relative;
+    }
+
+    .left-icon{
+
+      position:absolute;
+
+      left:16px;
+      top:50%;
+
+      transform:translateY(-50%);
+
+      color:#c084fc;
+
+      font-size:13px;
+
+      z-index:2;
+    }
+
+    .toggle-password{
+
+      position:absolute;
+
+      right:16px;
+      top:50%;
+
+      transform:translateY(-50%);
+
+      color:#c084fc;
+
+      font-size:14px;
+
+      cursor:pointer;
+    }
+
+    .input-box input,
+    .role-select{
+
+      width:100%;
+
+      height:48px;
+
+      border-radius:14px;
+
+      border:
+      1px solid rgba(217,70,239,0.2);
+
+      background:
+      rgba(255,255,255,0.04);
+
+      outline:none;
+
+      color:#fff;
+
+      font-size:13px;
+
+      padding:0 45px 0 42px;
+
+      transition:0.3s;
+    }
+
+    .input-box input:focus,
+    .role-select:focus{
+
+      border-color:#c084fc;
+
+      box-shadow:
+      0 0 14px rgba(217,70,239,0.15);
+    }
+
+    .input-box input::placeholder{
+      color:#94a3b8;
+    }
+
+    .role-select{
+      appearance:none;
+      cursor:pointer;
+    }
+
+    .role-select option{
+      background:#111827;
+      color:#fff;
+    }
+
+    /* BUTTON */
+
+    .signup-btn{
+
+      width:100%;
+
+      height:48px;
+
+      border:none;
+
+      border-radius:14px;
+
+      background:
+      linear-gradient(135deg,#d946ef,#3b82f6);
+
+      color:#fff;
+
+      font-size:14px;
+      font-weight:600;
+
+      cursor:pointer;
+
+      margin-top:8px;
+
+      transition:0.3s;
+    }
+
+    .signup-btn:hover{
+
+      transform:translateY(-2px);
+
+      box-shadow:
+      0 0 18px rgba(217,70,239,0.3);
+    }
+
+    /* LOGIN TEXT */
+
+    .login-link{
+
+      margin-top:16px;
+
+      text-align:center;
+
+      color:#94a3b8;
+
+      font-size:13px;
+    }
+
+    .login-link a{
+
+      color:#c084fc;
+
+      text-decoration:none;
+
+      font-weight:600;
+    }
+
+    .login-link a:hover{
+      text-decoration:underline;
+    }
+
+    /* RESPONSIVE */
+
+    @media(max-width:900px){
+
+      .signup-container{
+        grid-template-columns:1fr;
+      }
+
+      .left-side{
+        display:none;
+      }
+
+      .right-side{
+        padding:30px 22px;
+      }
+
+    }
+
+    @media(max-width:500px){
+
+      body{
+        padding:10px;
+      }
+
+      .signup-container{
+        border-radius:18px;
+      }
+
+      .logo img{
+        width:140px;
+      }
+
+      .title h1{
+        font-size:24px;
+      }
+
+      .input-box input,
+      .role-select,
+      .signup-btn{
+        height:45px;
+      }
+
+    }
+
+  </style>
+
+</head>
+
+<body>
+
+  <div class="signup-container">
+
+    <!-- LEFT SIDE -->
+
+    <div class="left-side">
+
+      <h1>
+        Grow Your Business
+        With Smart Digital
+        Solutions
+      </h1>
+
+      <p>
+        Join our business platform to manage projects,
+        monitor services, track payments and grow your
+        brand with modern digital solutions.
+      </p>
+
+      <div class="features">
+
+        <div class="feature">
+
+          <i class="fa-solid fa-globe"></i>
+
+          <div>
+
+            <h4>Business Websites</h4>
+
+            <p>
+              Professional websites for your business growth.
+            </p>
+
+          </div>
+
+        </div>
+
+        <div class="feature">
+
+          <i class="fa-solid fa-chart-line"></i>
+
+          <div>
+
+            <h4>Digital Marketing</h4>
+
+            <p>
+              Boost your online presence and customer reach.
+            </p>
+
+          </div>
+
+        </div>
+
+        <div class="feature">
+
+          <i class="fa-solid fa-layer-group"></i>
+
+          <div>
+
+            <h4>Business Services</h4>
+
+            <p>
+              Manage all your services from one dashboard.
+            </p>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- RIGHT SIDE -->
+
+    <div class="right-side">
+
+      <!-- LOGO -->
+
+      <div class="logo">
+
+        <a href="sign.html">
+
+          <img
+            src="./src/logo.webp"
+            alt="company logo">
+
+        </a>
+
+      </div>
+
+      <!-- TITLE -->
+
+      <div class="title">
+
+        <h1>Create Account</h1>
+
+        <p>Sign up to continue</p>
+
+      </div>
+
+      <!-- FORM -->
+
+      <form>
+
+        <!-- ROLE -->
+
+        <div class="form-group">
+
+          <label>Select Role</label>
+
+          <div class="input-box">
+
+            <i class="fa-solid fa-user-shield left-icon"></i>
+
+            <select class="role-select">
+
+              <option value="">
+                Choose Role
+              </option>
+
+              <option value="admin">
+                Admin
+              </option>
+
+              <option value="client">
+                Client
+              </option>
+
+            </select>
+
+          </div>
+
+        </div>
+
+        <!-- NAME -->
+
+        <div class="form-group">
+
+          <label>Full Name</label>
+
+          <div class="input-box">
+
+            <i class="fa-solid fa-user left-icon"></i>
+
+            <input
+              type="text"
+              id="fullName"
+              placeholder="Enter your full name">
+
+          </div>
+
+        </div>
+
+        <!-- EMAIL -->
+
+        <div class="form-group">
+
+          <label>Email Address</label>
+
+          <div class="input-box">
+
+            <i class="fa-solid fa-envelope left-icon"></i>
+
+            <input
+              type="email"
+              id="email"
+              placeholder="Enter your email">
+
+          </div>
+
+        </div>
+
+        <!-- PASSWORD -->
+
+        <div class="form-group">
+
+          <label>Password</label>
+
+          <div class="input-box">
+
+            <i class="fa-solid fa-lock left-icon"></i>
+
+            <input
+              type="text"
+              placeholder="Create password"
+              id="password">
+
+            <i
+              class="fa-solid fa-eye toggle-password"
+              onclick="togglePassword('password',this)">
+            </i>
+
+          </div>
+
+        </div>
+
+        <!-- CONFIRM PASSWORD -->
+
+        <div class="form-group">
+
+          <label>Confirm Password</label>
+
+          <div class="input-box">
+
+            <i class="fa-solid fa-lock left-icon"></i>
+
+            <input
+              type="text"
+              placeholder="Confirm password"
+              id="confirmPassword">
+
+            <i
+              class="fa-solid fa-eye toggle-password"
+              onclick="togglePassword('confirmPassword',this)">
+            </i>
+
+          </div>
+
+        </div>
+
+        <!-- BUTTON -->
+
+        <button
+          type="submit"
+          class="signup-btn">
+
+          Create Account
+
+        </button>
+
+      </form>
+
+      <!-- LOGIN -->
+
+      <div class="login-link">
+
+        Already have an account?
+
+        <a href="index.html">
+          Login
+        </a>
+
+      </div>
+
+    </div>
+
+  </div>
+
+  <!-- JAVASCRIPT -->
+
+  <script>
+
+    // PASSWORD SHOW / HIDE
+
+    function togglePassword(inputId,icon){
+
+      const input =
+      document.getElementById(inputId);
+
+      if(input.type === "password"){
+
+        input.type = "text";
+
+        icon.classList.remove("fa-eye");
+
+        icon.classList.add("fa-eye-slash");
+
+      }
+
+      else{
+
+        input.type = "password";
+
+        icon.classList.remove("fa-eye-slash");
+
+        icon.classList.add("fa-eye");
+
+      }
+
+    }
+
+    // NAME FIELD ONLY LETTERS
+
+    const nameInput =
+    document.getElementById("fullName");
+
+    nameInput.addEventListener("input",function(){
+
+      this.value =
+      this.value.replace(/[^a-zA-Z\s]/g,'');
+
+    });
+
+    // FORM VALIDATION
+
+    const form =
+    document.querySelector("form");
+
+    form.addEventListener("submit",function(e){
+
+      e.preventDefault();
+
+      const role =
+      document.querySelector(".role-select").value;
+
+      const name =
+      document.getElementById("fullName").value.trim();
+
+      const email =
+      document.getElementById("email").value.trim();
+
+      const password =
+      document.getElementById("password").value.trim();
+
+      const confirmPassword =
+      document.getElementById("confirmPassword").value.trim();
+
+      // VALIDATION
+
+      if(role === ""){
+
+        alert("Please select role");
+        return;
+
+      }
+
+      if(name === ""){
+
+        alert("Please enter full name");
+        return;
+
+      }
+
+      if(email === ""){
+
+        alert("Please enter email");
+        return;
+
+      }
+
+      const emailPattern =
+      /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+      if(!emailPattern.test(email)){
+
+        alert("Please enter valid email");
+        return;
+
+      }
+
+      if(password.length < 6){
+
+        alert("Password minimum 6 characters");
+        return;
+
+      }
+
+      if(password !== confirmPassword){
+
+        alert("Passwords do not match");
+        return;
+
+      }
+
+      alert("Account Created Successfully!");
+
+      form.reset();
+
+    });
+
+  </script>
+
+</body>
+
+</html>

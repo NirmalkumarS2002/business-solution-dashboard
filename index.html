@@ -2,217 +2,335 @@
 <html lang="en">
 
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <meta charset="UTF-8">
+
+  <meta name="viewport"
+    content="width=device-width, initial-scale=1.0" />
+
   <title>Login Page</title>
 
   <!-- GOOGLE FONT -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <link rel="preconnect"
+    href="https://fonts.googleapis.com">
+
+  <link
+    href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+    rel="stylesheet">
 
   <!-- FONT AWESOME -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+
+  <link rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
 
   <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      font-family: 'Poppins', sans-serif;
+
+    *{
+      margin:0;
+      padding:0;
+      box-sizing:border-box;
+      font-family:'Poppins',sans-serif;
     }
 
-    body {
-      height: 100vh;
-      display: flex;
-      justify-content: center;
-      align-items: center;
+    body{
+
+      height:100vh;
+
+      display:flex;
+      justify-content:center;
+      align-items:center;
+
       background:
-        linear-gradient(rgba(8, 10, 25, 0.88), rgba(8, 10, 25, 0.88)),
-        linear-gradient(135deg, #090916, #111827, #0f172a);
-      overflow: hidden;
-      padding: 20px;
-      position: relative;
+      linear-gradient(rgba(8,10,25,0.88),
+      rgba(8,10,25,0.88)),
+      linear-gradient(135deg,#090916,#111827,#0f172a);
+
+      overflow:hidden;
+      padding:20px;
+      position:relative;
     }
 
     /* BACKGROUND GLOW */
 
-    body::before {
-      content: "";
-      position: absolute;
-      width: 350px;
-      height: 350px;
-      background: #d946ef;
-      filter: blur(140px);
-      top: -100px;
-      left: -100px;
-      opacity: 0.35;
+    body::before{
+
+      content:"";
+
+      position:absolute;
+
+      width:350px;
+      height:350px;
+
+      background:#d946ef;
+
+      filter:blur(140px);
+
+      top:-100px;
+      left:-100px;
+
+      opacity:0.35;
     }
 
-    body::after {
-      content: "";
-      position: absolute;
-      width: 350px;
-      height: 350px;
-      background: #3b82f6;
-      filter: blur(140px);
-      bottom: -120px;
-      right: -100px;
-      opacity: 0.35;
+    body::after{
+
+      content:"";
+
+      position:absolute;
+
+      width:350px;
+      height:350px;
+
+      background:#3b82f6;
+
+      filter:blur(140px);
+
+      bottom:-120px;
+      right:-100px;
+
+      opacity:0.35;
     }
 
     /* LOGIN BOX */
 
-    .login-box {
-      width: 380px;
-      padding: 42px 35px;
-      background: rgba(17, 24, 39, 0.82);
-      border: 1px solid rgba(217, 70, 239, 0.2);
-      backdrop-filter: blur(18px);
-      border-radius: 28px;
-      box-shadow: 0 0 35px rgba(0, 0, 0, 0.45);
-      color: #fff;
-      position: relative;
-      z-index: 10;
+    .login-box{
+
+      width:380px;
+
+      padding:42px 35px;
+
+      background:rgba(17,24,39,0.82);
+
+      border:1px solid rgba(217,70,239,0.2);
+
+      backdrop-filter:blur(18px);
+
+      border-radius:28px;
+
+      box-shadow:0 0 35px rgba(0,0,0,0.45);
+
+      color:#fff;
+
+      position:relative;
+      z-index:10;
     }
 
     /* LOGO */
 
-    .logo {
-      display: flex;
-      justify-content: center;
-      margin-bottom: 25px;
+    .logo{
+      display:flex;
+      justify-content:center;
+      margin-bottom:25px;
     }
 
-    .logo img {
-      width: 180px;
+    .logo img{
+      width:180px;
     }
 
     /* TEXT */
 
-    .login-box h2 {
-      text-align: center;
-      font-size: 34px;
-      margin-bottom: 10px;
-      background: linear-gradient(135deg, #d946ef, #3b82f6);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
+    .login-box h2{
+
+      text-align:center;
+
+      font-size:34px;
+
+      margin-bottom:10px;
+
+      background:
+      linear-gradient(135deg,#d946ef,#3b82f6);
+
+      -webkit-background-clip:text;
+      -webkit-text-fill-color:transparent;
     }
 
-    .login-box p {
-      text-align: center;
-      font-size: 14px;
-      color: #cbd5e1;
-      margin-bottom: 30px;
+    .login-box p{
+
+      text-align:center;
+
+      font-size:14px;
+
+      color:#cbd5e1;
+
+      margin-bottom:30px;
     }
 
     /* INPUT BOX */
 
-    .input-box {
-      position: relative;
-      margin-bottom: 22px;
+    .input-box{
+      position:relative;
+      margin-bottom:22px;
     }
 
     .input-box input,
-    .input-box select {
-      width: 100%;
-      padding: 15px 50px 15px 15px;
-      border: none;
-      outline: none;
-      border-radius: 14px;
-      background: rgba(255, 255, 255, 0.07);
-      border: 1px solid rgba(217, 70, 239, 0.12);
-      color: #fff;
-      font-size: 15px;
-      transition: 0.3s;
+    .input-box select{
+
+      width:100%;
+
+      padding:15px 50px 15px 15px;
+
+      border:none;
+      outline:none;
+
+      border-radius:14px;
+
+      background:
+      rgba(255,255,255,0.07);
+
+      border:
+      1px solid rgba(217,70,239,0.12);
+
+      color:#fff;
+
+      font-size:15px;
+
+      transition:0.3s;
     }
 
     .input-box input:focus,
-    .input-box select:focus {
-      border: 1px solid #c084fc;
-      box-shadow: 0 0 15px rgba(192, 132, 252, 0.25);
+    .input-box select:focus{
+
+      border:1px solid #c084fc;
+
+      box-shadow:
+      0 0 15px rgba(192,132,252,0.25);
     }
 
-    .input-box input::placeholder {
-      color: #cbd5e1;
+    .input-box input::placeholder{
+      color:#cbd5e1;
     }
 
-    .input-box select {
-      appearance: none;
-      color: #fff;
+    .input-box select{
+      appearance:none;
+      color:#fff;
     }
 
-    .input-box option {
-      color: #000;
+    .input-box option{
+      color:#000;
     }
 
-    .input-box i {
-      position: absolute;
-      right: 18px;
-      top: 50%;
-      transform: translateY(-50%);
-      color: #c084fc;
-      font-size: 16px;
+    /* NORMAL ICON */
+
+    .single-icon{
+
+      position:absolute;
+
+      right:18px;
+      top:50%;
+
+      transform:translateY(-50%);
+
+      color:#c084fc;
+
+      font-size:16px;
+    }
+
+    /* PASSWORD EYE ICON */
+
+    .toggle-password{
+
+      position:absolute;
+
+      right:18px;
+      top:50%;
+
+      transform:translateY(-50%);
+
+      color:#c084fc;
+
+      font-size:16px;
+
+      cursor:pointer;
+    }
+
+    /* PASSWORD FIELD */
+
+    .password-field{
+      padding-right:50px !important;
     }
 
     /* BUTTON */
 
-    .login-btn {
-      width: 100%;
-      padding: 14px;
-      border: none;
-      border-radius: 14px;
-      background: linear-gradient(135deg, #d946ef, #3b82f6);
-      color: #fff;
-      font-size: 16px;
-      font-weight: 600;
-      cursor: pointer;
-      transition: 0.4s;
-      margin-top: 10px;
+    .login-btn{
+
+      width:100%;
+
+      padding:14px;
+
+      border:none;
+
+      border-radius:14px;
+
+      background:
+      linear-gradient(135deg,#d946ef,#3b82f6);
+
+      color:#fff;
+
+      font-size:16px;
+      font-weight:600;
+
+      cursor:pointer;
+
+      transition:0.4s;
+
+      margin-top:10px;
     }
 
-    .login-btn:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 0 25px rgba(217, 70, 239, 0.45);
+    .login-btn:hover{
+
+      transform:translateY(-3px);
+
+      box-shadow:
+      0 0 25px rgba(217,70,239,0.45);
     }
 
     /* BOTTOM TEXT */
 
-    .bottom-text {
-      text-align: center;
-      margin-top: 22px;
-      font-size: 14px;
-      color: #cbd5e1;
+    .bottom-text{
+
+      text-align:center;
+
+      margin-top:22px;
+
+      font-size:14px;
+
+      color:#cbd5e1;
     }
 
-    .bottom-text a {
-      color: #c084fc;
-      text-decoration: none;
-      font-weight: 500;
+    .bottom-text a{
+
+      color:#c084fc;
+
+      text-decoration:none;
+
+      font-weight:500;
     }
 
-    .bottom-text a:hover {
-      text-decoration: underline;
+    .bottom-text a:hover{
+      text-decoration:underline;
     }
 
     /* RESPONSIVE */
 
-    @media(max-width:450px) {
+    @media(max-width:450px){
 
-      .login-box {
-        width: 100%;
-        padding: 35px 24px;
+      .login-box{
+        width:100%;
+        padding:35px 24px;
       }
 
-      .login-box h2 {
-        font-size: 28px;
+      .login-box h2{
+        font-size:28px;
       }
 
-      .logo img {
-        width: 150px;
+      .logo img{
+        width:150px;
       }
 
     }
+
   </style>
+
 </head>
 
 <body>
@@ -222,9 +340,14 @@
     <!-- LOGO -->
 
     <a href="index.html">
+
       <div class="logo">
-        <img src="./src/logo.webp" alt="logo" >
+
+        <img src="./src/logo.webp"
+          alt="logo">
+
       </div>
+
     </a>
 
     <h2>Welcome Back</h2>
@@ -251,7 +374,7 @@
 
       </select>
 
-      <i class="fa-solid fa-user-shield"></i>
+      <i class="fa-solid fa-user-shield single-icon"></i>
 
     </div>
 
@@ -259,9 +382,12 @@
 
     <div class="input-box">
 
-      <input type="email" id="email" placeholder="Enter Email ID">
+      <input
+        type="email"
+        id="email"
+        placeholder="Enter Email ID">
 
-      <i class="fa-solid fa-envelope"></i>
+      <i class="fa-solid fa-envelope single-icon"></i>
 
     </div>
 
@@ -269,15 +395,26 @@
 
     <div class="input-box">
 
-      <input type="password" placeholder="Enter Password" id="password">
+      <input
+        type="text"
+        placeholder="Enter Password"
+        id="password"
+        class="password-field">
 
-      <i class="fa-solid fa-lock"></i>
+      <!-- ONLY ONE EYE ICON -->
+
+      <i
+        class="fa-solid fa-eye toggle-password"
+        onclick="togglePassword()">
+      </i>
 
     </div>
 
     <!-- BUTTON -->
 
-    <button class="login-btn" onclick="loginUser()">
+    <button
+      class="login-btn"
+      onclick="loginUser()">
 
       Login
 
@@ -289,86 +426,138 @@
 
       Don't have an account?
 
-      <a href="404.html">Register</a>
+      <a href="sign.html">
+        Sign up
+      </a>
 
     </div>
 
   </div>
 
+  <!-- JAVASCRIPT -->
+
   <script>
 
-    function loginUser() {
+    // PASSWORD SHOW / HIDE
+
+    function togglePassword(){
+
+      const passwordInput =
+      document.getElementById("password");
+
+      const eyeIcon =
+      document.querySelector(".toggle-password");
+
+      if(passwordInput.type === "password"){
+
+        passwordInput.type = "text";
+
+        eyeIcon.classList.remove("fa-eye");
+
+        eyeIcon.classList.add("fa-eye-slash");
+
+      }
+
+      else{
+
+        passwordInput.type = "password";
+
+        eyeIcon.classList.remove("fa-eye-slash");
+
+        eyeIcon.classList.add("fa-eye");
+
+      }
+
+    }
+
+
+    // LOGIN FUNCTION
+
+    function loginUser(){
 
       // GET VALUES
 
-      let role = document.getElementById("role").value;
-      let email = document.getElementById("email").value.trim();
-      let password = document.getElementById("password").value.trim();
+      let role =
+      document.getElementById("role").value;
+
+      let email =
+      document.getElementById("email").value.trim();
+
+      let password =
+      document.getElementById("password").value.trim();
 
       // EMAIL VALIDATION
 
-      let emailPattern = /^[^ ]+@[^ ]+\.[a-z]{2,3}$/;
+      let emailPattern =
+      /^[^ ]+@[^ ]+\.[a-z]{2,3}$/;
 
       // ROLE CHECK
 
-      if (role === "") {
+      if(role === ""){
 
         alert("Please Select Role");
+
         return;
 
       }
 
       // EMAIL CHECK
 
-      if (email === "") {
+      if(email === ""){
 
         alert("Please Enter Email");
+
         return;
 
       }
 
       // VALID EMAIL CHECK
 
-      if (!email.match(emailPattern)) {
+      if(!email.match(emailPattern)){
 
         alert("Please Enter Valid Email");
+
         return;
 
       }
 
       // PASSWORD CHECK
 
-      if (password === "") {
+      if(password === ""){
 
         alert("Please Enter Password");
+
         return;
 
       }
 
       // PASSWORD LENGTH
 
-      if (password.length < 6) {
+      if(password.length < 6){
 
         alert("Password Must Be Minimum 6 Characters");
+
         return;
 
       }
 
       // SAVE EMAIL
 
-      localStorage.setItem("userEmail", email);
+      localStorage.setItem("userEmail",email);
 
       // REDIRECT
 
-      if (role === "admin") {
+      if(role === "admin"){
 
-        window.location.href = "admin.html";
+        window.location.href =
+        "admin.html";
 
       }
 
-      else if (role === "client") {
+      else if(role === "client"){
 
-        window.location.href = "client.html";
+        window.location.href =
+        "client.html";
 
       }
 
