@@ -22,26 +22,80 @@
     }
 
     body{
-      background:#0f172a;
+      background:
+      linear-gradient(rgba(8,10,25,0.88),rgba(8,10,25,0.88)),
+      linear-gradient(135deg,#090916,#111827,#0f172a);
       color:#fff;
       min-height:100vh;
-      display:flex;
+      overflow-x:hidden;
+    }
+
+    /* OVERLAY */
+
+    .overlay{
+      position:fixed;
+      width:100%;
+      height:100%;
+      background:rgba(0,0,0,0.5);
+      top:0;
+      left:0;
+      z-index:998;
+      opacity:0;
+      visibility:hidden;
+      transition:0.3s;
+    }
+
+    .overlay.show{
+      opacity:1;
+      visibility:visible;
     }
 
     /* SIDEBAR */
 
     .sidebar{
       width:270px;
-      background:#111827;
+      background:rgba(15,23,42,0.95);
       padding:30px 20px;
       position:fixed;
+      top:0;
+      left:0;
       height:100vh;
-      border-right:1px solid rgba(255,255,255,0.08);
+      border-right:1px solid rgba(168,85,247,0.2);
+      backdrop-filter:blur(12px);
+      z-index:999;
+      transition:0.3s ease;
+    }
+
+    .sidebar.active{
+      left:0;
+    }
+
+    .sidebar-top{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      margin-bottom:20px;
+    }
+
+    .close-btn{
+      display:none;
+      font-size:22px;
+      cursor:pointer;
+      color:#fff;
+    }
+
+    .logo{
+      display:flex;
+      align-items:center;
     }
 
     .logo img{
-        width: 180px;
-      margin-bottom:40px;
+      width:clamp(140px,18vw,190px);
+    }
+
+    .sidelogo img{
+      display:none;
+      width:150px;
     }
 
     .sidebar ul{
@@ -54,19 +108,30 @@
 
     .sidebar ul li a{
       text-decoration:none;
-      color:#cbd5e1;
+      color:#d1d5db;
       display:flex;
       align-items:center;
       gap:15px;
       padding:15px;
-      border-radius:12px;
+      border-radius:14px;
       transition:0.3s;
       font-size:15px;
+      background:rgba(255,255,255,0.03);
+    }
+
+    .sidebar ul li a i{
+      color:#c084fc;
     }
 
     .sidebar ul li a:hover,
     .sidebar ul li a.active{
-      background:linear-gradient(135deg,#2563eb,#38bdf8);
+      background:linear-gradient(135deg,#d946ef,#3b82f6);
+      color:#fff;
+      box-shadow:0 0 18px rgba(217,70,239,0.35);
+    }
+
+    .sidebar ul li a:hover i,
+    .sidebar ul li a.active i{
       color:#fff;
     }
 
@@ -74,8 +139,9 @@
 
     .main{
       margin-left:270px;
-      width:100%;
+      width:calc(100% - 270px);
       padding:30px;
+      transition:0.3s;
     }
 
     /* TOPBAR */
@@ -85,36 +151,75 @@
       justify-content:space-between;
       align-items:center;
       margin-bottom:35px;
-      flex-wrap:wrap;
       gap:20px;
+      flex-wrap:nowrap;
     }
 
-    .topbar h1{
-      font-size:32px;
+    .menulogo{
+      display:flex;
+      align-items:center;
+      gap:18px;
+    }
+
+    .menu-btn{
+      width:45px;
+      height:45px;
+      background:rgba(255,255,255,0.08);
+      border:1px solid rgba(217,70,239,0.2);
+      border-radius:12px;
+      display:none;
+      justify-content:center;
+      align-items:center;
+      cursor:pointer;
+      font-size:20px;
+      color:#fff;
+      backdrop-filter:blur(10px);
     }
 
     .profile{
       display:flex;
       align-items:center;
       gap:15px;
-      background:#111827;
       padding:10px 18px;
-      border-radius:12px;
+      border-radius:16px;
+      background:rgba(255,255,255,0.05);
+      border:1px solid rgba(217,70,239,0.15);
+      backdrop-filter:blur(10px);
     }
 
     .profile-icon{
-  width:50px;
-  height:50px;
-  border-radius:50%;
-  background:linear-gradient(135deg,#38bdf8,#2563eb);
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  font-size:22px;
-  font-weight:700;
-  color:#fff;
-  text-transform:uppercase;
-}
+      width:50px;
+      height:50px;
+      border-radius:50%;
+      background:linear-gradient(135deg,#d946ef,#3b82f6);
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      font-size:22px;
+      font-weight:700;
+      color:#fff;
+      text-transform:uppercase;
+      box-shadow:0 0 15px rgba(59,130,246,0.4);
+    }
+
+    .profile h4{
+      font-size:17px;
+    }
+
+    .profile p{
+      font-size:13px;
+      color:#cbd5e1;
+    }
+
+    /* HEADING */
+
+    .cardwraper h1{
+      font-size:42px;
+      margin-bottom:30px;
+      background:linear-gradient(135deg,#d946ef,#3b82f6);
+      -webkit-background-clip:text;
+      -webkit-text-fill-color:transparent;
+    }
 
     /* CARDS */
 
@@ -126,31 +231,32 @@
     }
 
     .card{
-      background:#111827;
+      background:rgba(17,24,39,0.88);
       padding:25px;
-      border-radius:18px;
+      border-radius:22px;
+      border:1px solid rgba(217,70,239,0.15);
+      backdrop-filter:blur(14px);
       transition:0.3s;
-      border:1px solid rgba(255,255,255,0.05);
     }
 
     .card:hover{
       transform:translateY(-5px);
-      box-shadow:0 10px 25px rgba(0,0,0,0.3);
+      box-shadow:0 0 25px rgba(217,70,239,0.25);
     }
 
     .card i{
       font-size:35px;
-      color:#38bdf8;
+      color:#c084fc;
       margin-bottom:20px;
     }
 
     .card h2{
-      font-size:32px;
+      font-size:34px;
       margin-bottom:5px;
     }
 
     .card p{
-      color:#94a3b8;
+      color:#cbd5e1;
       font-size:14px;
     }
 
@@ -162,23 +268,23 @@
       gap:25px;
     }
 
-    .projects,
+    .table-box,
     .activity{
-      background:#111827;
-      border-radius:18px;
+      background:rgba(17,24,39,0.88);
+      border-radius:22px;
       padding:25px;
-      border:1px solid rgba(255,255,255,0.05);
+      border:1px solid rgba(217,70,239,0.15);
+      backdrop-filter:blur(14px);
+      overflow:auto;
     }
 
     .section-title{
-      display:flex;
-      justify-content:space-between;
-      align-items:center;
       margin-bottom:25px;
     }
 
     .section-title h2{
       font-size:22px;
+      color:#fff;
     }
 
     /* TABLE */
@@ -186,15 +292,23 @@
     table{
       width:100%;
       border-collapse:collapse;
+      min-width:500px;
     }
 
     table tr{
-      border-bottom:1px solid rgba(255,255,255,0.06);
+      border-bottom:1px solid rgba(255,255,255,0.08);
+    }
+
+    table th{
+      text-align:left;
+      padding:15px 10px;
+      color:#c084fc;
+      font-size:14px;
     }
 
     table td{
       padding:16px 10px;
-      color:#cbd5e1;
+      color:#e5e7eb;
       font-size:14px;
     }
 
@@ -205,19 +319,14 @@
       font-weight:600;
     }
 
-    .completed{
-      background:#14532d;
+    .active-status{
+      background:rgba(34,197,94,0.15);
       color:#4ade80;
     }
 
-    .pending{
-      background:#78350f;
+    .pending-status{
+      background:rgba(234,179,8,0.15);
       color:#facc15;
-    }
-
-    .progress{
-      background:#1e3a8a;
-      color:#60a5fa;
     }
 
     /* ACTIVITY */
@@ -231,13 +340,14 @@
     .activity-item i{
       width:45px;
       height:45px;
+      border-radius:50%;
       display:flex;
       justify-content:center;
       align-items:center;
-      border-radius:50%;
-      background:#1e293b;
-      color:#38bdf8;
+      background:rgba(217,70,239,0.15);
+      color:#c084fc;
       font-size:18px;
+      flex-shrink:0;
     }
 
     .activity-item h4{
@@ -247,7 +357,7 @@
 
     .activity-item p{
       font-size:13px;
-      color:#94a3b8;
+      color:#cbd5e1;
     }
 
     /* RESPONSIVE */
@@ -260,46 +370,100 @@
 
     }
 
-    @media(max-width:900px){
+    @media(max-width:950px){
+
+      .menu-btn{
+        display:flex;
+      }
+
+      .close-btn{
+        display:block;
+      }
+
+      .sidelogo img{
+        display:block;
+      }
 
       .sidebar{
-        width:90px;
-        padding:25px 10px;
-      }
-
-
-      .sidebar ul li a span{
-        display:none;
-      }
-
-      .sidebar ul li a{
-        justify-content:center;
+        left:-100%;
       }
 
       .main{
-        margin-left:90px;
+        margin-left:0;
+        width:100%;
+        padding:20px;
+      }
+
+    }
+
+    @media(max-width:768px){
+
+      .topbar{
+        gap:15px;
+      }
+
+      .cardwraper h1{
+        font-size:30px;
+      }
+
+      .profile-icon{
+        width:42px;
+        height:42px;
+        font-size:18px;
+      }
+
+      .profile h4{
+        font-size:14px;
+      }
+
+      .profile p{
+        font-size:11px;
+      }
+
+      .cards{
+        grid-template-columns:1fr;
       }
 
     }
 
     @media(max-width:600px){
 
-      .main{
-        padding:20px;
-      }
-
-      .topbar h1{
-        font-size:24px;
-      }
-
       .profile{
-        width:100%;
-        justify-content:center;
+        padding:8px 0px;
+        background:none;
+        border:none;
       }
 
-      table{
-        overflow-x:auto;
-        display:block;
+      .profile h4,
+      .profile p{
+        display:none;
+      }
+
+      .main{
+        padding:15px;
+      }
+
+      .table-box,
+      .activity{
+        padding:18px;
+      }
+
+      .profile-icon{
+        width:32px;
+        height:32px;
+        font-size:14px;
+      }
+
+      .menulogo{
+        gap:10px;
+      }
+
+      .logo img{
+        width:140px;
+      }
+
+      .topbar{
+        align-items:center;
       }
 
     }
@@ -308,41 +472,58 @@
 </head>
 <body>
 
+  <div class="overlay" id="overlay"></div>
+
   <!-- SIDEBAR -->
 
-  <div class="sidebar">
+  <div class="sidebar" id="sidebar">
 
-    <div class="logo">
-      <img src="./src/logo.webp" alt="company logo">
+    <div class="sidebar-top">
+
+      <div class="sidelogo">
+        <img src="./src/logo.webp" alt="company logo">
+      </div>
+
+      <div class="close-btn" id="closeBtn">
+        <i class="fa-solid fa-xmark"></i>
+      </div>
+
     </div>
 
     <ul>
 
       <li>
-        <a href="#" class="active">
-          <i class="fa-solid fa-grid-2"></i>
+        <a href="client.html" class="active">
+          <i class="fa-solid fa-house"></i>
           <span>Dashboard</span>
         </a>
       </li>
 
       <li>
         <a href="#">
-          <i class="fa-solid fa-briefcase"></i>
-          <span>Projects</span>
+          <i class="fa-solid fa-folder-open"></i>
+          <span>My Projects</span>
         </a>
       </li>
 
       <li>
         <a href="#">
-          <i class="fa-solid fa-chart-line"></i>
-          <span>Analytics</span>
+          <i class="fa-solid fa-list-check"></i>
+          <span>Tasks</span>
         </a>
       </li>
 
       <li>
         <a href="#">
-          <i class="fa-solid fa-users"></i>
-          <span>Clients</span>
+          <i class="fa-solid fa-file-lines"></i>
+          <span>Reports</span>
+        </a>
+      </li>
+
+      <li>
+        <a href="#">
+          <i class="fa-solid fa-comments"></i>
+          <span>Messages</span>
         </a>
       </li>
 
@@ -354,7 +535,7 @@
       </li>
 
       <li>
-        <a href="index.html">
+        <a href="#" onclick="logoutUser()">
           <i class="fa-solid fa-right-from-bracket"></i>
           <span>Logout</span>
         </a>
@@ -372,7 +553,19 @@
 
     <div class="topbar">
 
-      <h1>Client Dashboard</h1>
+      <div class="menulogo">
+
+        <div class="menu-btn" id="menuBtn">
+          <i class="fa-solid fa-bars"></i>
+        </div>
+
+        <div class="logo">
+          <img src="./src/logo.webp" alt="company logo">
+        </div>
+
+      </div>
+
+      <!-- PROFILE -->
 
       <div class="profile">
 
@@ -380,9 +573,7 @@
 
         <div>
           <h4 id="userName"></h4>
-          <p style="font-size:13px;color:#94a3b8;">
-            Premium Client
-          </p>
+          <p>Client</p>
         </div>
 
       </div>
@@ -391,30 +582,36 @@
 
     <!-- CARDS -->
 
-    <div class="cards">
+    <div class="cardwraper">
 
-      <div class="card">
-        <i class="fa-solid fa-layer-group"></i>
-        <h2>24</h2>
-        <p>Total Projects</p>
-      </div>
+      <h1>Client Dashboard</h1>
 
-      <div class="card">
-        <i class="fa-solid fa-chart-simple"></i>
-        <h2>18</h2>
-        <p>Completed Projects</p>
-      </div>
+      <div class="cards">
 
-      <div class="card">
-        <i class="fa-solid fa-clock"></i>
-        <h2>6</h2>
-        <p>Pending Tasks</p>
-      </div>
+        <div class="card">
+          <i class="fa-solid fa-folder-open"></i>
+          <h2>12</h2>
+          <p>Active Projects</p>
+        </div>
 
-      <div class="card">
-        <i class="fa-solid fa-dollar-sign"></i>
-        <h2>$12K</h2>
-        <p>Total Revenue</p>
+        <div class="card">
+          <i class="fa-solid fa-list-check"></i>
+          <h2>28</h2>
+          <p>Pending Tasks</p>
+        </div>
+
+        <div class="card">
+          <i class="fa-solid fa-clock"></i>
+          <h2>6</h2>
+          <p>Upcoming Meetings</p>
+        </div>
+
+        <div class="card">
+          <i class="fa-solid fa-chart-line"></i>
+          <h2>82%</h2>
+          <p>Project Progress</p>
+        </div>
+
       </div>
 
     </div>
@@ -423,41 +620,37 @@
 
     <div class="content">
 
-      <!-- PROJECTS -->
+      <!-- PROJECT TABLE -->
 
-      <div class="projects">
+      <div class="table-box">
 
         <div class="section-title">
-          <h2>Recent Projects</h2>
+          <h2>My Projects</h2>
         </div>
 
         <table>
 
           <tr>
-            <td>Business Website UI</td>
-            <td>12 Jun 2026</td>
-            <td>
-              <span class="status completed">
-                Completed
-              </span>
-            </td>
+            <th>Project</th>
+            <th>Deadline</th>
+            <th>Status</th>
           </tr>
 
           <tr>
-            <td>Mobile App Dashboard</td>
-            <td>18 Jun 2026</td>
+            <td>Business Website</td>
+            <td>12 Jun 2026</td>
             <td>
-              <span class="status progress">
+              <span class="status active-status">
                 In Progress
               </span>
             </td>
           </tr>
 
           <tr>
-            <td>Ecommerce Platform</td>
-            <td>22 Jun 2026</td>
+            <td>Mobile App UI</td>
+            <td>20 Jun 2026</td>
             <td>
-              <span class="status pending">
+              <span class="status pending-status">
                 Pending
               </span>
             </td>
@@ -467,8 +660,18 @@
             <td>SEO Optimization</td>
             <td>28 Jun 2026</td>
             <td>
-              <span class="status completed">
+              <span class="status active-status">
                 Completed
+              </span>
+            </td>
+          </tr>
+
+          <tr>
+            <td>Ecommerce Store</td>
+            <td>30 Jun 2026</td>
+            <td>
+              <span class="status active-status">
+                Running
               </span>
             </td>
           </tr>
@@ -482,7 +685,7 @@
       <div class="activity">
 
         <div class="section-title">
-          <h2>Recent Activity</h2>
+          <h2>Recent Updates</h2>
         </div>
 
         <div class="activity-item">
@@ -490,41 +693,30 @@
           <i class="fa-solid fa-check"></i>
 
           <div>
-            <h4>Project Completed</h4>
-            <p>Business Landing Page completed successfully.</p>
+            <h4>Project Updated</h4>
+            <p>Your website homepage design was updated.</p>
           </div>
 
         </div>
 
         <div class="activity-item">
 
-          <i class="fa-solid fa-chart-line"></i>
-
-          <div>
-            <h4>Analytics Updated</h4>
-            <p>Website traffic increased by 18% this week.</p>
-          </div>
-
-        </div>
-
-        <div class="activity-item">
-
-          <i class="fa-solid fa-user-plus"></i>
-
-          <div>
-            <h4>New Client Added</h4>
-            <p>New premium client joined your business plan.</p>
-          </div>
-
-        </div>
-
-        <div class="activity-item">
-
-          <i class="fa-solid fa-envelope"></i>
+          <i class="fa-solid fa-message"></i>
 
           <div>
             <h4>New Message</h4>
-            <p>You received a project inquiry from client.</p>
+            <p>You received a message from the admin team.</p>
+          </div>
+
+        </div>
+
+        <div class="activity-item">
+
+          <i class="fa-solid fa-calendar"></i>
+
+          <div>
+            <h4>Meeting Scheduled</h4>
+            <p>Your next meeting is on Friday at 4 PM.</p>
           </div>
 
         </div>
@@ -534,30 +726,52 @@
     </div>
 
   </div>
-<script>
 
-  // LOCAL STORAGE LA IRUNTHU EMAIL GET
-  let userEmail = localStorage.getItem("userEmail");
+  <script>
 
-  // EMAIL SHOW
-  document.getElementById("userName").innerHTML = userEmail;
+    // USER EMAIL
 
-  // FIRST LETTER GET
-  let firstLetter = userEmail.charAt(0);
+    let userEmail = localStorage.getItem("userEmail") || "Client";
 
-  // PROFILE ICON LETTER SHOW
-  document.getElementById("profileIcon").innerHTML = firstLetter;
+    document.getElementById("userName").innerHTML = userEmail;
 
+    let firstLetter = userEmail.charAt(0);
 
-  // LOGOUT FUNCTION
-  function logoutUser(){
+    document.getElementById("profileIcon").innerHTML = firstLetter;
 
-    localStorage.removeItem("userEmail");
+    // LOGOUT
 
-    window.location.href = "index.html";
+    function logoutUser(){
 
-  }
+      localStorage.removeItem("userEmail");
 
-</script>
+      window.location.href = "index.html";
+
+    }
+
+    // SIDEBAR TOGGLE
+
+    const menuBtn = document.getElementById("menuBtn");
+    const sidebar = document.getElementById("sidebar");
+    const closeBtn = document.getElementById("closeBtn");
+    const overlay = document.getElementById("overlay");
+
+    menuBtn.addEventListener("click", () => {
+      sidebar.classList.add("active");
+      overlay.classList.add("show");
+    });
+
+    closeBtn.addEventListener("click", () => {
+      sidebar.classList.remove("active");
+      overlay.classList.remove("show");
+    });
+
+    overlay.addEventListener("click", () => {
+      sidebar.classList.remove("active");
+      overlay.classList.remove("show");
+    });
+
+  </script>
+
 </body>
 </html>

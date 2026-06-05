@@ -13,6 +13,7 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
 
   <style>
+
     *{
       margin:0;
       padding:0;
@@ -25,26 +26,76 @@
       display:flex;
       justify-content:center;
       align-items:center;
-      background:linear-gradient(135deg,#0f172a,#111827,#1e293b);
+      background:
+      linear-gradient(rgba(8,10,25,0.88),rgba(8,10,25,0.88)),
+      linear-gradient(135deg,#090916,#111827,#0f172a);
       overflow:hidden;
-    }
-
-    .login-box{
-      width:380px;
-      padding:40px 35px;
-      background:rgba(255,255,255,0.08);
-      border:1px solid rgba(255,255,255,0.15);
-      backdrop-filter:blur(15px);
-      border-radius:25px;
-      box-shadow:0 10px 30px rgba(0,0,0,0.4);
-      color:#fff;
+      padding:20px;
       position:relative;
     }
 
+    /* BACKGROUND GLOW */
+
+    body::before{
+      content:"";
+      position:absolute;
+      width:350px;
+      height:350px;
+      background:#d946ef;
+      filter:blur(140px);
+      top:-100px;
+      left:-100px;
+      opacity:0.35;
+    }
+
+    body::after{
+      content:"";
+      position:absolute;
+      width:350px;
+      height:350px;
+      background:#3b82f6;
+      filter:blur(140px);
+      bottom:-120px;
+      right:-100px;
+      opacity:0.35;
+    }
+
+    /* LOGIN BOX */
+
+    .login-box{
+      width:380px;
+      padding:42px 35px;
+      background:rgba(17,24,39,0.82);
+      border:1px solid rgba(217,70,239,0.2);
+      backdrop-filter:blur(18px);
+      border-radius:28px;
+      box-shadow:0 0 35px rgba(0,0,0,0.45);
+      color:#fff;
+      position:relative;
+      z-index:10;
+    }
+
+    /* LOGO */
+
+    .logo{
+      display:flex;
+      justify-content:center;
+      margin-bottom:25px;
+    }
+
+    .logo img{
+      width:180px;
+    }
+
+    /* TEXT */
+
     .login-box h2{
       text-align:center;
-      font-size:32px;
+      font-size:34px;
       margin-bottom:10px;
+      background:linear-gradient(135deg,#d946ef,#3b82f6);
+      -webkit-background-clip:text;
+      -webkit-text-fill-color:transparent;
     }
 
     .login-box p{
@@ -53,6 +104,8 @@
       color:#cbd5e1;
       margin-bottom:30px;
     }
+
+    /* INPUT BOX */
 
     .input-box{
       position:relative;
@@ -65,14 +118,22 @@
       padding:15px 50px 15px 15px;
       border:none;
       outline:none;
-      border-radius:12px;
-      background:rgba(255,255,255,0.12);
+      border-radius:14px;
+      background:rgba(255,255,255,0.07);
+      border:1px solid rgba(217,70,239,0.12);
       color:#fff;
       font-size:15px;
+      transition:0.3s;
+    }
+
+    .input-box input:focus,
+    .input-box select:focus{
+      border:1px solid #c084fc;
+      box-shadow:0 0 15px rgba(192,132,252,0.25);
     }
 
     .input-box input::placeholder{
-      color:#d1d5db;
+      color:#cbd5e1;
     }
 
     .input-box select{
@@ -89,16 +150,18 @@
       right:18px;
       top:50%;
       transform:translateY(-50%);
-      color:#93c5fd;
+      color:#c084fc;
       font-size:16px;
     }
+
+    /* BUTTON */
 
     .login-btn{
       width:100%;
       padding:14px;
       border:none;
-      border-radius:12px;
-      background:linear-gradient(135deg,#38bdf8,#2563eb);
+      border-radius:14px;
+      background:linear-gradient(135deg,#d946ef,#3b82f6);
       color:#fff;
       font-size:16px;
       font-weight:600;
@@ -109,35 +172,43 @@
 
     .login-btn:hover{
       transform:translateY(-3px);
-      box-shadow:0 10px 20px rgba(37,99,235,0.4);
+      box-shadow:0 0 25px rgba(217,70,239,0.45);
     }
+
+    /* BOTTOM TEXT */
 
     .bottom-text{
       text-align:center;
-      margin-top:20px;
+      margin-top:22px;
       font-size:14px;
       color:#cbd5e1;
     }
 
     .bottom-text a{
-      color:#38bdf8;
+      color:#c084fc;
       text-decoration:none;
       font-weight:500;
     }
 
-    @media(max-width:450px){
+    .bottom-text a:hover{
+      text-decoration:underline;
+    }
 
-      body{
-        padding:20px;
-      }
+    /* RESPONSIVE */
+
+    @media(max-width:450px){
 
       .login-box{
         width:100%;
-        padding:35px 25px;
+        padding:35px 24px;
       }
 
       .login-box h2{
         font-size:28px;
+      }
+
+      .logo img{
+        width:150px;
       }
 
     }
@@ -148,76 +219,104 @@
 
   <div class="login-box">
 
+    <!-- LOGO -->
+
+    <div class="logo">
+      <img src="./src/logo.webp" alt="logo">
+    </div>
+
     <h2>Welcome Back</h2>
+
     <p>Login to your account</p>
 
     <!-- ROLE -->
+
     <div class="input-box">
 
-    <select id="role">
+      <select id="role">
 
         <option value="">
-            Select Role
+          Select Role
         </option>
 
         <option value="admin">
-            Admin
+          Admin
         </option>
 
         <option value="client">
-            Client
+          Client
         </option>
 
-    </select>
+      </select>
 
-    <i class="fa-solid fa-user-shield"></i>
+      <i class="fa-solid fa-user-shield"></i>
 
-</div>
+    </div>
 
     <!-- EMAIL -->
-   <!-- EMAIL -->
-<div class="input-box">
 
-  <input 
-    type="email" 
-    id="email"
-    placeholder="Enter Email ID"
-  >
+    <div class="input-box">
 
-  <i class="fa-solid fa-envelope"></i>
+      <input 
+        type="email" 
+        id="email"
+        placeholder="Enter Email ID"
+      >
 
-</div>
+      <i class="fa-solid fa-envelope"></i>
+
+    </div>
 
     <!-- PASSWORD -->
+
     <div class="input-box">
-      <input type="password" placeholder="Enter Password"   id="password">
+
+      <input 
+        type="password" 
+        placeholder="Enter Password"
+        id="password"
+      >
+
       <i class="fa-solid fa-lock"></i>
+
     </div>
 
     <!-- BUTTON -->
-      <button class="login-btn" onclick="loginUser()">
+
+    <button class="login-btn" onclick="loginUser()">
+
       Login
+
     </button>
 
+    <!-- BOTTOM -->
+
     <div class="bottom-text">
+
       Don't have an account?
+
       <a href="#">Register</a>
+
     </div>
 
   </div>
+
 <script>
 
   function loginUser(){
 
     // GET VALUES
+
     let role = document.getElementById("role").value;
     let email = document.getElementById("email").value.trim();
     let password = document.getElementById("password").value.trim();
 
     // EMAIL VALIDATION
+
     let emailPattern = /^[^ ]+@[^ ]+\.[a-z]{2,3}$/;
 
     // ROLE CHECK
+
     if(role === ""){
 
       alert("Please Select Role");
@@ -226,6 +325,7 @@
     }
 
     // EMAIL CHECK
+
     if(email === ""){
 
       alert("Please Enter Email");
@@ -234,6 +334,7 @@
     }
 
     // VALID EMAIL CHECK
+
     if(!email.match(emailPattern)){
 
       alert("Please Enter Valid Email");
@@ -242,6 +343,7 @@
     }
 
     // PASSWORD CHECK
+
     if(password === ""){
 
       alert("Please Enter Password");
@@ -250,6 +352,7 @@
     }
 
     // PASSWORD LENGTH
+
     if(password.length < 6){
 
       alert("Password Must Be Minimum 6 Characters");
@@ -258,9 +361,11 @@
     }
 
     // SAVE EMAIL
+
     localStorage.setItem("userEmail", email);
 
     // REDIRECT
+
     if(role === "admin"){
 
       window.location.href = "admin.html";
@@ -279,4 +384,3 @@
 
 </body>
 </html>
-
