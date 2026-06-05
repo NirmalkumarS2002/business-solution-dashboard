@@ -1528,16 +1528,26 @@
           <p>Pending</p>
         </div>
       </div>
-      <div class="search-filter">
-        <div class="search-box"><i class="fa-solid fa-magnifying-glass"></i><input type="text"
-            placeholder="Search projects..."></div>
-        <select class="filter-select">
-          <option value="">All Status</option>
-          <option>Active</option>
-          <option>Pending</option>
-          <option>Completed</option>
-        </select>
-      </div>
+   <div class="search-filter">
+
+  <div class="search-box">
+    <i class="fa-solid fa-magnifying-glass"></i>
+
+    <input 
+      type="text"
+      id="projectSearch"
+      placeholder="Search projects..."
+    >
+  </div>
+
+  <select class="filter-select" id="projectFilter">
+    <option value="">All Status</option>
+    <option value="Active">Active</option>
+    <option value="Pending">Pending</option>
+    <option value="Completed">Completed</option>
+  </select>
+
+</div>
       <div class="projects-grid" id="projectsGrid">
         <div class="project-card">
           <div class="project-top">
@@ -2075,19 +2085,128 @@ document.getElementById("uName").addEventListener("input", function () {
     }
 
     // ADD PROJECT
-    function addProject() {
-      const name = document.getElementById("pName").value.trim();
-      const client = document.getElementById("pClient").value.trim();
-      const deadline = document.getElementById("pDeadline").value;
-      const status = document.getElementById("pStatus").value;
-      if (!name || !client) { alert("Please fill all fields!"); return; }
-      const sc = status === "Active" ? "active-status" : status === "Pending" ? "pending-status" : "completed-status";
-      const dl = deadline ? new Date(deadline).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" }) : "N/A";
-      document.getElementById("projectsGrid").insertAdjacentHTML("beforeend", `<div class="project-card"><div class="project-top"><div class="project-icon"><i class="fa-solid fa-briefcase"></i></div><div class="project-actions"><button class="action-btn edit-btn"><i class="fa-solid fa-pen"></i></button><button class="action-btn delete-btn" onclick="delCard(this)"><i class="fa-solid fa-trash"></i></button></div></div><div class="project-name">${name}</div><div class="project-client"><i class="fa-solid fa-user"></i>${client}</div><div class="progress-label"><span>Progress</span><span>0%</span></div><div class="progress-bar"><div class="progress-fill" style="width:0%"></div></div><div class="project-footer"><span class="status ${sc}">${status}</span><span class="deadline"><i class="fa-solid fa-calendar"></i>${dl}</span></div></div>`);
-      closeModal("projectModal");
-      document.getElementById("pName").value = ""; document.getElementById("pClient").value = ""; document.getElementById("pDeadline").value = "";
-      showToast("Project added!");
-    }
+function addProject() {
+
+  const name = document.getElementById("pName").value.trim();
+  const client = document.getElementById("pClient").value.trim();
+  const deadline = document.getElementById("pDeadline").value;
+  const status = document.getElementById("pStatus").value;
+
+  // VALIDATION
+  const textRegex = /^[A-Za-z ]+$/;
+
+  // CHECK EMPTY FIELDS
+  if (!name || !client || !deadline || !status) {
+    alert("Please fill all fields!");
+    return;
+  }
+
+  // PROJECT NAME VALIDATION
+  if (!textRegex.test(name)) {
+    alert("Project name should contain only letters!");
+    return;
+  }
+
+  // CLIENT NAME VALIDATION
+  if (!textRegex.test(client)) {
+    alert("Client name should contain only letters!");
+    return;
+  }
+
+  // STATUS CLASS
+  const sc =
+    status === "Active"
+      ? "active-status"
+      : status === "Pending"
+      ? "pending-status"
+      : "completed-status";
+
+  // DATE FORMAT
+  const dl = new Date(deadline).toLocaleDateString("en-US", {
+    month: "short",
+    day: "numeric",
+    year: "numeric"
+  });
+
+  // ADD PROJECT CARD
+  document.getElementById("projectsGrid").insertAdjacentHTML(
+    "beforeend",
+    `
+    <div class="project-card">
+
+      <div class="project-top">
+
+        <div class="project-icon">
+          <i class="fa-solid fa-briefcase"></i>
+        </div>
+
+        <div class="project-actions">
+
+          <button class="action-btn edit-btn">
+            <i class="fa-solid fa-pen"></i>
+          </button>
+
+          <button class="action-btn delete-btn" onclick="delCard(this)">
+            <i class="fa-solid fa-trash"></i>
+          </button>
+
+        </div>
+
+      </div>
+
+      <div class="project-name">${name}</div>
+
+      <div class="project-client">
+        <i class="fa-solid fa-user"></i>
+        ${client}
+      </div>
+
+      <div class="progress-label">
+        <span>Progress</span>
+        <span>0%</span>
+      </div>
+
+      <div class="progress-bar">
+        <div class="progress-fill" style="width:0%"></div>
+      </div>
+
+      <div class="project-footer">
+
+        <span class="status ${sc}">${status}</span>
+
+        <span class="deadline">
+          <i class="fa-solid fa-calendar"></i>
+          ${dl}
+        </span>
+
+      </div>
+
+    </div>
+    `
+  );
+
+  // CLOSE MODAL
+  closeModal("projectModal");
+
+  // CLEAR INPUTS
+  document.getElementById("pName").value = "";
+  document.getElementById("pClient").value = "";
+  document.getElementById("pDeadline").value = "";
+
+  showToast("Project added!");
+}
+
+
+// PROJECT NAME LA NUMBER TYPE AGA KUDATHU
+document.getElementById("pName").addEventListener("input", function () {
+  this.value = this.value.replace(/[^A-Za-z ]/g, "");
+});
+
+
+// CLIENT NAME LA NUMBER TYPE AGA KUDATHU
+document.getElementById("pClient").addEventListener("input", function () {
+  this.value = this.value.replace(/[^A-Za-z ]/g, "");
+});
 
     function delCard(btn) { if (confirm("Delete this project?")) { btn.closest(".project-card").remove(); showToast("Project deleted!"); } }
 
@@ -2142,6 +2261,58 @@ document.getElementById("uName").addEventListener("input", function () {
     });
 
   });
+
+
+  //project
+// SEARCH + FILTER PROJECTS
+
+const searchInput = document.getElementById("projectSearch");
+const filterSelect = document.getElementById("projectFilter");
+
+searchInput.addEventListener("input", filterProjects);
+filterSelect.addEventListener("change", filterProjects);
+
+function filterProjects() {
+
+  const searchValue = searchInput.value.toLowerCase();
+  const filterValue = filterSelect.value.toLowerCase();
+
+  const cards = document.querySelectorAll("#projectsGrid .project-card");
+
+  cards.forEach((card) => {
+
+    // PROJECT NAME
+    const projectName = card.querySelector(".project-name")
+      .textContent.toLowerCase();
+
+    // CLIENT NAME
+    const clientName = card.querySelector(".project-client")
+      .textContent.toLowerCase();
+
+    // STATUS
+    const status = card.querySelector(".status")
+      .textContent.toLowerCase();
+
+    // SEARCH MATCH
+    const matchesSearch =
+      projectName.includes(searchValue) ||
+      clientName.includes(searchValue);
+
+    // FILTER MATCH
+    const matchesFilter =
+      filterValue === "" ||
+      status === filterValue;
+
+    // SHOW / HIDE
+    if (matchesSearch && matchesFilter) {
+      card.style.display = "block";
+    } else {
+      card.style.display = "none";
+    }
+
+  });
+
+}
   </script>
 </body>
 
