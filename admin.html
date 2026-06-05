@@ -1949,18 +1949,118 @@
     }
 
     // ADD USER
-    function addUser() {
-      const name = document.getElementById("uName").value.trim();
-      const email = document.getElementById("uEmail").value.trim();
-      const role = document.getElementById("uRole").value;
-      const status = document.getElementById("uStatus").value;
-      if (!name || !email) { alert("Please fill all fields!"); return; }
-      const sc = status === "Active" ? "active-status" : status === "Pending" ? "pending-status" : "inactive-status";
-      document.getElementById("userTableBody").insertAdjacentHTML("beforeend", `<tr><td><div class="user-cell"><div class="user-avatar">${name[0].toUpperCase()}</div><span>${name}</span></div></td><td>${email}</td><td>${role}</td><td><span class="status ${sc}">${status}</span></td><td><div class="action-btns"><button class="action-btn edit-btn"><i class="fa-solid fa-pen"></i></button><button class="action-btn delete-btn" onclick="delRow(this)"><i class="fa-solid fa-trash"></i></button></div></td></tr>`);
-      closeModal("userModal");
-      document.getElementById("uName").value = ""; document.getElementById("uEmail").value = "";
-      showToast("User added!");
-    }
+ function addUser() {
+  const name = document.getElementById("uName").value.trim();
+  const email = document.getElementById("uEmail").value.trim();
+  const role = document.getElementById("uRole").value;
+  const status = document.getElementById("uStatus").value;
+
+  // NAME VALIDATION
+  const nameRegex = /^[A-Za-z ]+$/;
+
+  if (!name) {
+    alert("Please enter name!");
+    return;
+  }
+
+  if (!nameRegex.test(name)) {
+    alert("Name should contain only letters!");
+    return;
+  }
+
+  // EMAIL VALIDATION
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+  if (!email) {
+    alert("Please enter email!");
+    return;
+  }
+
+  if (!emailRegex.test(email)) {
+    alert("Please enter valid email!");
+    return;
+  }
+
+  const sc =
+    status === "Active"
+      ? "active-status"
+      : status === "Pending"
+      ? "pending-status"
+      : "inactive-status";
+
+  document.getElementById("userTableBody").insertAdjacentHTML(
+    "beforeend",
+    `
+    <tr>
+      <td>
+        <div class="user-cell">
+          <div class="user-avatar">
+            ${name[0].toUpperCase()}
+          </div>
+          <span>${name}</span>
+        </div>
+      </td>
+
+      <td>${email}</td>
+      <td>${role}</td>
+
+      <td>
+        <span class="status ${sc}">${status}</span>
+      </td>
+
+      <td>
+        <div class="action-btns">
+          <button class="action-btn edit-btn">
+            <i class="fa-solid fa-pen"></i>
+          </button>
+
+          <button class="action-btn delete-btn" onclick="delRow(this)">
+            <i class="fa-solid fa-trash"></i>
+          </button>
+        </div>
+      </td>
+    </tr>
+  `
+  );
+
+  closeModal("userModal");
+
+  // CLEAR INPUTS
+  document.getElementById("uName").value = "";
+  document.getElementById("uEmail").value = "";
+
+  showToast("User added!");
+}
+
+
+// DELETE ROW
+function delRow(btn) {
+  if (confirm("Delete this user?")) {
+    btn.closest("tr").remove();
+    showToast("User deleted!");
+  }
+}
+
+
+// SEARCH + FILTER
+function filterUsers() {
+  const s = document.getElementById("userSearch").value.toLowerCase();
+  const f = document.getElementById("userStatusFilter").value;
+
+  document.querySelectorAll("#userTableBody tr").forEach((row) => {
+    const n = row.cells[0].innerText.toLowerCase();
+    const st = row.cells[3].innerText.trim();
+
+    row.style.display =
+      n.includes(s) && (!f || st === f) ? "" : "none";
+  });
+}
+
+
+// NAME FIELD LA NUMBER TYPE AGA KUDATHU
+document.getElementById("uName").addEventListener("input", function () {
+  this.value = this.value.replace(/[^A-Za-z ]/g, "");
+});
 
     function delRow(btn) { if (confirm("Delete this user?")) { btn.closest("tr").remove(); showToast("User deleted!"); } }
 
