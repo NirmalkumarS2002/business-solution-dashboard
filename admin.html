@@ -330,6 +330,7 @@
       border: 1px solid rgba(217, 70, 239, 0.15);
       backdrop-filter: blur(14px);
       overflow: auto;
+      position: relative;
     }
 
     .section-title {
@@ -509,6 +510,7 @@
       gap: 8px;
       margin-top: 20px;
       flex-wrap: wrap;
+
     }
 
     .page-btn {
@@ -1258,13 +1260,35 @@
       padding: 8px 22px;
     }
 
-    
-      .pagination {
-      display: flex;
-      justify-content: center;}
 
-           .table-box {
-      padding: 25px 5px;}
+  .table-box{
+    overflow-x:auto;
+    width:100%;
+    padding: 25px 5px;
+    position:relative;
+  }
+
+
+  /* PAGINATION ALWAYS CENTER */
+  .pagination{
+    position:sticky;
+    left:50%;
+    transform:translateX(-50%);
+    bottom:0;
+    width:max-content;
+    
+    display:flex;
+    align-items:center;
+    justify-content: center;
+    gap:10px;
+    z-index:10;
+    margin-right: -100px;
+  }
+
+  body{
+    overflow-x:hidden;
+  }
+
   }
 
   
